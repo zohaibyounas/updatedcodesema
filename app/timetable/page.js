@@ -273,7 +273,7 @@ export default function TimeTable() {
             className="fixed inset-0 flex items-center justify-center z-50"
             ref={modalRef}
           >
-            <div className="bg-white w-[30%] h-[25%] font-bold p-6 rounded shadow-lg mb-32">
+            <div className="bg-white w-[30%] h-[30%] font-bold p-6 rounded shadow-lg mb-32">
               <h4 className="mb-8 text-4xl mt-8">
                 Add Course for {selectedDay.format("MMMM DD, YYYY")}
               </h4>
