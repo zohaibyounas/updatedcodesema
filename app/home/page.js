@@ -66,7 +66,7 @@ export default function HomePage() {
     } else {
       setUser(null); // Clear user state in context
       setIsAdmin(false); // Reset isAdmin flag
-      router.push("/login"); // Redirect to login page
+      router.push("/"); // Redirect to login page
     }
   };
 
@@ -102,6 +102,7 @@ export default function HomePage() {
 
       {/* Header with navigation */}
       <div className="absolute left-0 top-0 w-full shadow-lg">
+        {/* Large screen navigation */}
         <div className="hidden bg-white px-4 py-2 md:flex md:items-center md:justify-between">
           <div className="flex-1">
             <Navbar navItems={navItemsLeft} />
@@ -120,7 +121,7 @@ export default function HomePage() {
             {isAdmin ? (
               <>
                 <span className="text-2xl font-bold mr-4 mt-4">
-                  Welcome sema {isAdmin.email}
+                  Welcome Sema {isAdmin.email}
                 </span>
                 {isAdmin && (
                   <button
@@ -170,6 +171,34 @@ export default function HomePage() {
               className="cursor-pointer"
               onClick={() => router.push("/")}
             />
+          </div>
+
+          {/* Show Welcome Sema and Logout on small screens */}
+          <div className="absolute left-[75%] top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-4">
+            {isAdmin ? (
+              <>
+                <span className="text-sm font-bold">Welcome Sema</span>
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login">
+                  <button className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 text-sm rounded-lg">
+                    Login
+                  </button>
+                </Link>
+                <Link href="/register">
+                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 text-sm rounded-lg">
+                    Register
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
 
           <Image
