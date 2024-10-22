@@ -36,7 +36,10 @@ export default function HomePage() {
   const counter = useRef(0);
   const { user, isAdmin, setUser, setIsAdmin } = useUser(); // Get the logged-in user info and admin status
   const router = useRouter();
-
+  useEffect(() => {
+    console.log(user);
+    // console.log(role);
+  }, []);
   // Ensure the component is mounted on the client before using the router
   useEffect(() => {
     setIsMounted(true);
@@ -53,7 +56,8 @@ export default function HomePage() {
       counter.current <= 0 ? images.length - 1 : counter.current - 1;
     setCurrentImageIndex(counter.current);
   };
-
+  //const data = useUser();
+  //console.log(data);
   const slideToNextImage = () => {
     counter.current =
       counter.current >= images.length - 1 ? 0 : counter.current + 1;
@@ -121,7 +125,7 @@ export default function HomePage() {
             {isAdmin ? (
               <>
                 <span className="text-2xl font-bold mr-4 mt-4">
-                  Welcome Sema {isAdmin.email}
+                  Welcome sema {isAdmin?.email}
                 </span>
                 {isAdmin && (
                   <button
@@ -177,7 +181,7 @@ export default function HomePage() {
           <div className="absolute left-[75%] top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-4">
             {isAdmin ? (
               <>
-                <span className="text-sm font-bold">Welcome Sema</span>
+                <span className="text-sm font-bold"></span>
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg"

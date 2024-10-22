@@ -19,6 +19,7 @@ export default function TimeTable() {
   const [selectedDay, setSelectedDay] = useState(null);
   const [newCourse, setNewCourse] = useState({ name: "", time: "" });
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [editingCourse, setEditingCourse] = useState(null); // For editing course
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -46,7 +47,6 @@ export default function TimeTable() {
     fetchCourses();
   }, []);
 
-  // Function to handle user course sign-up
   const handleSignUpForCourse = async (course) => {
     if (!user || !user.id) {
       toast.error("You need to be logged in to sign up for a course!", {
@@ -56,8 +56,8 @@ export default function TimeTable() {
     }
 
     const { error } = await supabase
-      .from("CourseSignups") // Ensure this is the correct table where signups are stored
-      .insert([{ Users_id: user.id, course_id: course.id }]); // Adjust to your actual column names
+      .from("CourseSignups")
+      .insert([{ Users_id: user.id, course_id: course.id }]);
 
     if (error) {
       toast.error("Error signing up for the course!", {
@@ -130,11 +130,80 @@ export default function TimeTable() {
     });
   };
 
+  const handleEditCourse = async (course) => {
+    setEditingCourse(course); // Set the course to be edited
+    setNewCourse({ name: course.course_title, time: course.course_duration });
+    setSelectedDay(dayjs(course.course_schedule));
+  };
+
+  const handleSaveEditedCourse = async () => {
+    const { error } = await supabase
+      .from("Courses")
+      .update({
+        course_title: newCourse.name,
+        course_duration: newCourse.time,
+      })
+      .eq("id", editingCourse.id);
+
+    if (error) {
+      toast.error("Error updating the course!", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const updatedCourses = { ...courses };
+    updatedCourses[selectedDay.format("YYYY-MM-DD")] = updatedCourses[
+      selectedDay.format("YYYY-MM-DD")
+    ].map((course) =>
+      course.id === editingCourse.id
+        ? {
+            ...course,
+            course_title: newCourse.name,
+            course_duration: newCourse.time,
+          }
+        : course
+    );
+
+    setCourses(updatedCourses);
+    setNewCourse({ name: "", time: "" });
+    setSelectedDay(null);
+    setEditingCourse(null);
+    toast.success("Course updated successfully!", {
+      position: "top-center",
+    });
+  };
+
+  const handleDeleteCourse = async (course) => {
+    const { error } = await supabase
+      .from("Courses")
+      .delete()
+      .eq("id", course.id);
+    if (error) {
+      toast.error("Error deleting the course!", {
+        position: "top-center",
+      });
+      return;
+    }
+
+    const updatedCourses = { ...courses };
+    updatedCourses[dayjs(course.course_schedule).format("YYYY-MM-DD")] =
+      updatedCourses[dayjs(course.course_schedule).format("YYYY-MM-DD")].filter(
+        (c) => c.id !== course.id
+      );
+
+    setCourses(updatedCourses);
+    toast.success("Course deleted successfully!", {
+      position: "top-center",
+    });
+  };
+
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         setSelectedDay(null);
         setSelectedCourse(null);
+        setEditingCourse(null);
       }
     };
 
@@ -144,14 +213,9 @@ export default function TimeTable() {
     };
   }, []);
 
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
-    setSelectedDay(null);
-  };
-
-  // Cancel the add course modal
   const handleCancel = () => {
-    setSelectedDay(null); // Close the modal by resetting selectedDay
+    setSelectedDay(null);
+    setEditingCourse(null);
   };
 
   return (
@@ -226,26 +290,21 @@ export default function TimeTable() {
                           {day.date()}
                         </span>
 
-                        {/* Flex container for course content */}
                         <div className="flex flex-col justify-between h-full">
-                          {/* Display added courses */}
                           {(courses[day.format("YYYY-MM-DD")] || []).map(
                             (course, i) => (
                               <div
                                 key={i}
                                 className="text-black cursor-pointer flex flex-col h-full justify-between w-64"
                               >
-                                {/* Course title */}
                                 <div className="text-3xl">
                                   {course.course_title}
                                 </div>
 
-                                {/* Course duration */}
                                 <div className="text-2xl mb-4">
                                   {course.course_duration}
                                 </div>
 
-                                {/* Sign-up button positioned below the time */}
                                 {!isAdmin && (
                                   <button
                                     onClick={() =>
@@ -259,6 +318,33 @@ export default function TimeTable() {
                               </div>
                             )
                           )}
+
+                          {/* Show Edit/Delete only once if there are courses */}
+                          {isAdmin &&
+                            courses[day.format("YYYY-MM-DD")]?.length > 0 && (
+                              <div className="flex gap-4 justify-center mt-2">
+                                <button
+                                  onClick={() =>
+                                    handleEditCourse(
+                                      courses[day.format("YYYY-MM-DD")][0]
+                                    )
+                                  }
+                                  className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleDeleteCourse(
+                                      courses[day.format("YYYY-MM-DD")][0]
+                                    )
+                                  }
+                                  className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                                >
+                                  Delete
+                                </button>
+                              </div>
+                            )}
                         </div>
                       </td>
                     ))}
@@ -273,9 +359,11 @@ export default function TimeTable() {
             className="fixed inset-0 flex items-center justify-center z-50"
             ref={modalRef}
           >
-            <div className="bg-white w-[30%] h-[30%] font-bold p-6 rounded shadow-lg mb-32">
+            <div className="bg-white lg:w-[30%] w-[90%] lg:h-[40%] h-[35%] font-bold p-6 rounded shadow-lg mb-32">
               <h4 className="mb-8 text-4xl mt-8">
-                Add Course for {selectedDay.format("MMMM DD, YYYY")}
+                {editingCourse
+                  ? `Edit Course for ${selectedDay.format("MMMM DD, YYYY")}`
+                  : `Add Course for ${selectedDay.format("MMMM DD, YYYY")}`}
               </h4>
               <input
                 type="text"
@@ -301,12 +389,21 @@ export default function TimeTable() {
                 >
                   Cancel
                 </button>
-                <button
-                  onClick={() => handleAddCourse(selectedDay)}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xl font-bold"
-                >
-                  Add Course
-                </button>
+                {editingCourse ? (
+                  <button
+                    onClick={handleSaveEditedCourse}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xl font-bold"
+                  >
+                    Save Changes
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleAddCourse(selectedDay)}
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xl font-bold"
+                  >
+                    Add Course
+                  </button>
+                )}
               </div>
             </div>
           </div>

@@ -61,13 +61,13 @@ export default function Page() {
         // Show success toast with admin's email
         toast.success(`Login successful! Welcome, ${email}`, {
           position: "top-center",
-          autoClose: 1000, // Show the toast for 2 seconds
+          autoClose: 3000, // Show the toast for 2 seconds
         });
 
         // Delay the redirection to allow the toast to display
         setTimeout(() => {
           router.push("/"); // Replace with your calendar route
-        }, 1000); // 2 seconds delay for toast to show
+        }, 3000); // 2 seconds delay for toast to show
       } else {
         setError("You do not have permission to edit the calendar.");
         router.push("/");
