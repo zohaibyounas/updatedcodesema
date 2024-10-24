@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "../context/UserContex";
+import Link from "next/link"; // Import Link for navigation to register page
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
@@ -46,30 +47,6 @@ export default function TimeTable() {
 
     fetchCourses();
   }, []);
-
-  const handleSignUpForCourse = async (course) => {
-    if (!user || !user.id) {
-      toast.error("You need to be logged in to sign up for a course!", {
-        position: "top-center",
-      });
-      return;
-    }
-
-    const { error } = await supabase
-      .from("CourseSignups")
-      .insert([{ Users_id: user.id, course_id: course.id }]);
-
-    if (error) {
-      toast.error("Error signing up for the course!", {
-        position: "top-center",
-      });
-      return;
-    }
-
-    toast.success("Successfully signed up for the course!", {
-      position: "top-center",
-    });
-  };
 
   const goToPreviousMonth = () => {
     setCurrentMonth(currentMonth.subtract(1, "month"));
@@ -295,31 +272,29 @@ export default function TimeTable() {
                             (course, i) => (
                               <div
                                 key={i}
-                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64 ml-32"
+                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64 ml-24"
                               >
-                                <div className="text-3xl ml-20">
+                                <div className="text-3xl ">
                                   {course.course_title}
                                 </div>
 
-                                <div className="text-2xl mb-4 ml-20">
+                                <div className="text-2xl mb-4">
                                   {course.course_duration}
                                 </div>
 
+                                {/* Remove Sign Up Button and Add Register Button */}
                                 {!isAdmin && (
-                                  <button
-                                    onClick={() =>
-                                      handleSignUpForCourse(course)
-                                    }
-                                    className="mt-auto bg-blue-500 text-white px-2 py-1 rounded"
-                                  >
-                                    Sign Up
-                                  </button>
+                                  <Link href="/register">
+                                    <button className="mt-auto bg-teal-500 text-white px-2 py-1 rounded">
+                                      Register
+                                    </button>
+                                  </Link>
                                 )}
                               </div>
                             )
                           )}
 
-                          {/* Show Edit/Delete only once if there are courses */}
+                          {/* Show Edit/Delete only for Admin */}
                           {isAdmin &&
                             courses[day.format("YYYY-MM-DD")]?.length > 0 && (
                               <div className="flex gap-4 justify-center mt-2 ">
@@ -409,6 +384,7 @@ export default function TimeTable() {
           </div>
         )}
       </div>
+
       <ToastContainer />
     </div>
   );
