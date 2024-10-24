@@ -29,10 +29,10 @@ export default function RegisterPage() {
     setError("");
 
     const { data, error: signUpError } = await supabase.auth.signUp({
-      name,
-      email,
-      password,
-      role,
+      name: "sema",
+      email: "sema321@gmail.com",
+      password: "543210",
+      role: "admin",
     });
 
     if (signUpError) {

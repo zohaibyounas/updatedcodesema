@@ -264,7 +264,7 @@ export default function TimeTable() {
             <tbody>
               {Array.from({ length: 5 }).map((_, rowIndex) => (
                 <tr key={rowIndex}>
-                  <th className="whitespace-nowrap border border-gray-300 bg-stone-300 p-4 text-black ">
+                  <th className="whitespace-nowrap border border-gray-300 bg-stone-300 p-4 text-black  ">
                     <span className="block px-2 py-1">{`${
                       9 + rowIndex
                     }:00`}</span>
@@ -295,13 +295,13 @@ export default function TimeTable() {
                             (course, i) => (
                               <div
                                 key={i}
-                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64"
+                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64 ml-32"
                               >
-                                <div className="text-3xl">
+                                <div className="text-3xl ml-20">
                                   {course.course_title}
                                 </div>
 
-                                <div className="text-2xl mb-4">
+                                <div className="text-2xl mb-4 ml-20">
                                   {course.course_duration}
                                 </div>
 
@@ -322,7 +322,7 @@ export default function TimeTable() {
                           {/* Show Edit/Delete only once if there are courses */}
                           {isAdmin &&
                             courses[day.format("YYYY-MM-DD")]?.length > 0 && (
-                              <div className="flex gap-4 justify-center mt-2">
+                              <div className="flex gap-4 justify-center mt-2 ">
                                 <button
                                   onClick={() =>
                                     handleEditCourse(
@@ -359,7 +359,7 @@ export default function TimeTable() {
             className="fixed inset-0 flex items-center justify-center z-50"
             ref={modalRef}
           >
-            <div className="bg-white lg:w-[30%] w-[90%] lg:h-[40%] h-[35%] font-bold p-6 rounded shadow-lg mb-32">
+            <div className="bg-white lg:w-[30%] w-[90%] lg:h-[40%] h-[40%] font-bold p-6 rounded shadow-lg mb-32">
               <h4 className="mb-8 text-4xl mt-8">
                 {editingCourse
                   ? `Edit Course for ${selectedDay.format("MMMM DD, YYYY")}`
@@ -372,7 +372,7 @@ export default function TimeTable() {
                 onChange={(e) =>
                   setNewCourse({ ...newCourse, name: e.target.value })
                 }
-                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-xl text-2xl "
+                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-2xl text-xl  "
               />
               <input
                 type="time"

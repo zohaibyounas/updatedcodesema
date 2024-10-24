@@ -1,17 +1,20 @@
 "use client";
 import { createContext, useContext, useState } from "react";
 
+// Create the UserContext
 const UserContext = createContext();
 
+export const useUser = () => {
+  return useContext(UserContext);
+};
+
 export const UserProvider = ({ children }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [user, setUser] = useState(null); // Store user info (admin and regular user)
+  const [user, setUser] = useState(null); // This will hold the user data
+  const [isAdmin, setIsAdmin] = useState(false); // This holds the admin flag
 
   return (
-    <UserContext.Provider value={{ isAdmin, setIsAdmin, user, setUser }}>
+    <UserContext.Provider value={{ user, setUser, isAdmin, setIsAdmin }}>
       {children}
     </UserContext.Provider>
   );
 };
-
-export const useUser = () => useContext(UserContext);

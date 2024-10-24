@@ -12,12 +12,13 @@ import { createClient } from "@supabase/supabase-js";
 import Testimonials from "../testimonials/page";
 import TimeTable from "../timetable/page";
 import Link from "next/link";
-//import supabase from "../_database/supabase";
-import { useUser } from "../context/UserContex"; // Assuming you have a UserContext to manage user state
+import { useUser } from "../context/UserContex"; // Using the user context
+
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
+
 const images = [
   "/hero-1.jpeg",
   "/hero-2.jpeg",
@@ -34,14 +35,22 @@ export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const counter = useRef(0);
-  const { user, isAdmin, setUser, setIsAdmin } = useUser(); // Get the logged-in user info and admin status
+  const { user, isAdmin, setUser, setIsAdmin } = useUser(); // Get user and admin status from context
   const router = useRouter();
+
   useEffect(() => {
-    console.log(user);
-    // console.log(role);
-  }, []);
-  // Ensure the component is mounted on the client before using the router
-  useEffect(() => {
+    // On page load, retrieve user and role from localStorage
+    const storedUser = localStorage.getItem("user");
+    const storedRole = localStorage.getItem("role");
+
+    if (storedUser) {
+      setUser(JSON.parse(storedUser)); // Set user in the context
+    }
+
+    if (storedRole) {
+      setIsAdmin(storedRole === "admin"); // Set admin flag based on role
+    }
+
     setIsMounted(true);
 
     const intervalId = setInterval(() => {
@@ -56,13 +65,13 @@ export default function HomePage() {
       counter.current <= 0 ? images.length - 1 : counter.current - 1;
     setCurrentImageIndex(counter.current);
   };
-  //const data = useUser();
-  //console.log(data);
+
   const slideToNextImage = () => {
     counter.current =
       counter.current >= images.length - 1 ? 0 : counter.current + 1;
     setCurrentImageIndex(counter.current);
   };
+
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut(); // Supabase sign out
     if (error) {
@@ -70,6 +79,8 @@ export default function HomePage() {
     } else {
       setUser(null); // Clear user state in context
       setIsAdmin(false); // Reset isAdmin flag
+      localStorage.removeItem("user"); // Clear user from localStorage
+      localStorage.removeItem("role"); // Clear role from localStorage
       router.push("/"); // Redirect to login page
     }
   };
@@ -111,7 +122,7 @@ export default function HomePage() {
           <div className="flex-1">
             <Navbar navItems={navItemsLeft} />
           </div>
-          <div className="flex justify-center flex-1">
+          <div className="hidden md:block justify-center lg:ml-[400px] flex-1">
             <Logo
               className="h-32 cursor-pointer"
               onClick={() => router.push("/")}
@@ -121,20 +132,17 @@ export default function HomePage() {
             <Navbar navItems={navItemsRight} />
           </div>
           <div className="flex gap-4">
-            {/* If a user is logged in (admin or regular user), show their email */}
-            {isAdmin ? (
+            {user ? (
               <>
-                <span className="text-2xl font-bold mr-4 mt-4">
-                  Welcome sema {isAdmin?.email}
+                <span className="lg:text-2xl text-xs font-bold mr-6 mt-5">
+                  wellcome, {user.email}
                 </span>
-                {isAdmin && (
-                  <button
-                    onClick={handleLogout}
-                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-5 text-2xl rounded-lg"
-                  >
-                    Logout
-                  </button>
-                )}
+                <button
+                  onClick={handleLogout}
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-5 text-2xl rounded-lg"
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
@@ -167,21 +175,16 @@ export default function HomePage() {
           </select>
 
           <div className="absolute left-1/2 transform -translate-x-1/2">
-            <Image
-              src="/logo/logo.tif"
-              alt="Logo"
-              width={50}
-              height={50}
-              className="cursor-pointer"
-              onClick={() => router.push("/")}
-            />
+            {/* Hidden on small screens */}
           </div>
 
-          {/* Show Welcome Sema and Logout on small screens */}
+          {/* Show Welcome message and Logout on small screens */}
           <div className="absolute left-[75%] top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-4">
-            {isAdmin ? (
+            {user ? (
               <>
-                <span className="text-sm font-bold"></span>
+                <span className="sm:text-xs mt-2 mr-6 font-bold">
+                  welcome,{user.email}
+                </span>
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
