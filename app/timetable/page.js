@@ -14,38 +14,37 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TimeTable() {
-  const { isAdmin, user } = useUser(); // Get isAdmin and user from context
+  const { isAdmin } = useUser(); // Get isAdmin from context
   const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
   const [courses, setCourses] = useState({});
   const [selectedDay, setSelectedDay] = useState(null);
   const [newCourse, setNewCourse] = useState({ name: "", time: "" });
-  const [selectedCourse, setSelectedCourse] = useState(null);
   const [editingCourse, setEditingCourse] = useState(null); // For editing course
   const [isDeleting, setIsDeleting] = useState(false); // New state to track deletion
   const modalRef = useRef(null);
 
-  useEffect(() => {
-    // Fetch courses from the database
-    const fetchCourses = async () => {
-      const { data, error } = await supabase.from("Courses").select("*");
-      if (error) {
-        toast.error("Error fetching courses!", {
-          position: "top-center",
-        });
-        return;
-      }
-      // Organize courses by date
-      const coursesByDate = {};
-      data.forEach((course) => {
-        const date = course.course_schedule;
-        if (!coursesByDate[date]) {
-          coursesByDate[date] = [];
-        }
-        coursesByDate[date].push(course);
+  // Fetch courses from the database
+  const fetchCourses = async () => {
+    const { data, error } = await supabase.from("Courses").select("*");
+    if (error) {
+      toast.error("Error fetching courses!", {
+        position: "top-center",
       });
-      setCourses(coursesByDate);
-    };
+      return;
+    }
 
+    const coursesByDate = {};
+    data.forEach((course) => {
+      const date = course.course_schedule;
+      if (!coursesByDate[date]) {
+        coursesByDate[date] = [];
+      }
+      coursesByDate[date].push(course);
+    });
+    setCourses(coursesByDate);
+  };
+
+  useEffect(() => {
     fetchCourses();
   }, []);
 
@@ -82,10 +81,8 @@ export default function TimeTable() {
       course_schedule: day.format("YYYY-MM-DD"),
     };
 
-    const { data, error } = await supabase
-      .from("Courses")
-      .insert([postdata])
-      .select();
+    const { error } = await supabase.from("Courses").insert([postdata]);
+
     if (error) {
       toast.error("Error adding course to the database!", {
         position: "top-center",
@@ -93,23 +90,18 @@ export default function TimeTable() {
       return;
     }
 
-    setCourses({
-      ...courses,
-      [day.format("YYYY-MM-DD")]: [
-        ...(courses[day.format("YYYY-MM-DD")] || []),
-        postdata,
-      ],
-    });
-
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
+
+    // Refetch courses to update the UI
+    await fetchCourses();
     toast.success("Course added successfully!", {
       position: "top-center",
     });
   };
 
   const handleEditCourse = async (course) => {
-    setEditingCourse(course); // Set the course to be edited
+    setEditingCourse(course);
     setNewCourse({ name: course.course_title, time: course.course_duration });
     setSelectedDay(dayjs(course.course_schedule));
   };
@@ -130,30 +122,18 @@ export default function TimeTable() {
       return;
     }
 
-    const updatedCourses = { ...courses };
-    updatedCourses[selectedDay.format("YYYY-MM-DD")] = updatedCourses[
-      selectedDay.format("YYYY-MM-DD")
-    ].map((course) =>
-      course.id === editingCourse.id
-        ? {
-            ...course,
-            course_title: newCourse.name,
-            course_duration: newCourse.time,
-          }
-        : course
-    );
-
-    setCourses(updatedCourses);
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
     setEditingCourse(null);
+
+    // Refetch courses to update the UI
+    await fetchCourses();
     toast.success("Course updated successfully!", {
       position: "top-center",
     });
   };
 
   const handleDeleteCourse = async (course) => {
-    // Set the deleting state to true
     setIsDeleting(true);
 
     const { error } = await supabase
@@ -165,27 +145,21 @@ export default function TimeTable() {
       toast.error("Error deleting the course!", {
         position: "top-center",
       });
+      setIsDeleting(false);
       return;
     }
 
-    const updatedCourses = { ...courses };
-    updatedCourses[dayjs(course.course_schedule).format("YYYY-MM-DD")] =
-      updatedCourses[dayjs(course.course_schedule).format("YYYY-MM-DD")].filter(
-        (c) => c.id !== course.id
-      );
-
-    setCourses(updatedCourses);
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
     setEditingCourse(null);
 
-    // Reset the deleting state
-    setIsDeleting(false);
+    // Refetch courses to update the UI
+    await fetchCourses();
 
-    // Show success toast message
+    setIsDeleting(false);
     toast.success("Course deleted successfully!", {
       position: "top-center",
-      autoClose: 10,
+      autoClose: 1000,
     });
   };
 
@@ -193,7 +167,6 @@ export default function TimeTable() {
     const handleOutsideClick = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
         setSelectedDay(null);
-        setSelectedCourse(null);
         setEditingCourse(null);
       }
     };
@@ -275,7 +248,6 @@ export default function TimeTable() {
                         onClick={() => {
                           if (isAdmin && !isDeleting) {
                             setSelectedDay(day);
-                            setSelectedCourse(null);
                           }
                         }}
                       >
