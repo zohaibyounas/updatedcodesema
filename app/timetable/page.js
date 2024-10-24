@@ -21,6 +21,7 @@ export default function TimeTable() {
   const [newCourse, setNewCourse] = useState({ name: "", time: "" });
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [editingCourse, setEditingCourse] = useState(null); // For editing course
+  const [isDeleting, setIsDeleting] = useState(false); // New state to track deletion
   const modalRef = useRef(null);
 
   useEffect(() => {
@@ -152,10 +153,14 @@ export default function TimeTable() {
   };
 
   const handleDeleteCourse = async (course) => {
+    // Set the deleting state to true
+    setIsDeleting(true);
+
     const { error } = await supabase
       .from("Courses")
       .delete()
       .eq("id", course.id);
+
     if (error) {
       toast.error("Error deleting the course!", {
         position: "top-center",
@@ -170,8 +175,17 @@ export default function TimeTable() {
       );
 
     setCourses(updatedCourses);
+    setNewCourse({ name: "", time: "" });
+    setSelectedDay(null);
+    setEditingCourse(null);
+
+    // Reset the deleting state
+    setIsDeleting(false);
+
+    // Show success toast message
     toast.success("Course deleted successfully!", {
       position: "top-center",
+      autoClose: 10,
     });
   };
 
@@ -217,7 +231,9 @@ export default function TimeTable() {
         </div>
 
         <div
-          className={`w-full overflow-x-auto ${selectedDay ? "blur-sm" : ""}`}
+          className={`w-full overflow-x-auto ${
+            selectedDay && !isDeleting ? "blur-sm" : ""
+          }`}
         >
           <table className="w-full border-collapse text-xs sm:text-sm md:text-lg">
             <thead className="bg-stone-300 text-black">
@@ -257,7 +273,7 @@ export default function TimeTable() {
                         key={colIndex}
                         className="relative border border-gray-300 p-4 cursor-pointer"
                         onClick={() => {
-                          if (isAdmin) {
+                          if (isAdmin && !isDeleting) {
                             setSelectedDay(day);
                             setSelectedCourse(null);
                           }
@@ -329,7 +345,7 @@ export default function TimeTable() {
           </table>
         </div>
 
-        {selectedDay && (
+        {selectedDay && !isDeleting && (
           <div
             className="fixed inset-0 flex items-center justify-center z-50"
             ref={modalRef}
