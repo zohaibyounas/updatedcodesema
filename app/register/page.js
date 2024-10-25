@@ -8,16 +8,14 @@ import { useRouter } from "next/navigation";
 // Supabase initialization
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 export default function RegisterPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [role, setRole] = useState("");
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
@@ -28,19 +26,38 @@ export default function RegisterPage() {
     event.preventDefault();
     setError("");
 
-    const { data, error: signUpError } = await supabase.auth.signUp({
-      name: "sema",
-      email: "sema321@gmail.com",
-      password: "543210",
-      role: "admin",
-    });
+    // Check if the email is already registered in the Users table
+    const { data: existingUser, error: checkError } = await supabase
+      .from("Users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (checkError && checkError.code !== "PGRST116") {
+      setError("Error checking existing users in the database.");
+      return;
+    }
+
+    if (existingUser) {
+      setError("Email already registered.");
+      return;
+    }
+
+    // Proceed with sign-up if email is not registered
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp(
+      {
+        email,
+        password,
+      }
+    );
 
     if (signUpError) {
       setError(signUpError.message);
       return;
     }
 
-    if (data) {
+    // Insert user data into Users table after successful authentication sign-up
+    if (signUpData?.user) {
       const { error: insertError } = await supabase.from("Users").insert([
         {
           email,
@@ -55,15 +72,16 @@ export default function RegisterPage() {
         return;
       }
 
+      // Redirect to login page after successful registration
       router.push("/login");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-500 to-blue-500 p-6">
-      <div className="bg-white p-10 rounded-xl shadow-xl w-full  max-w-3xl ">
+      <div className="bg-white p-10 rounded-xl shadow-xl w-full max-w-3xl">
         <div className="flex justify-center mb-6">
-          <div className="h-16 w-32 rounded-full flex items-center justify-center ">
+          <div className="h-16 w-32 rounded-full flex items-center justify-center">
             <Image src="/logo/logo.tif" alt="Logo" width={100} height={80} />
           </div>
         </div>
