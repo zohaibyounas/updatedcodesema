@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "../context/UserContex";
 import Link from "next/link"; // Import Link for navigation to register page
+import { checkout } from "../api/webhook/checkout"; // Import checkout function
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
@@ -230,7 +231,7 @@ export default function TimeTable() {
             <tbody>
               {Array.from({ length: 5 }).map((_, rowIndex) => (
                 <tr key={rowIndex}>
-                  <th className="whitespace-nowrap border border-gray-300 bg-stone-300 p-4 text-black  ">
+                  <th className="whitespace-nowrap border border-gray-300 bg-stone-300 p-4 text-black">
                     <span className="block px-2 py-1">{`${
                       9 + rowIndex
                     }:00`}</span>
@@ -246,7 +247,19 @@ export default function TimeTable() {
                         key={colIndex}
                         className="relative border border-gray-300 p-4 cursor-pointer"
                         onClick={() => {
-                          if (isAdmin && !isDeleting) {
+                          if (!isAdmin && courses[day.format("YYYY-MM-DD")]) {
+                            // Redirect to Stripe for non-admin users
+                            checkout({
+                              lineItems: [
+                                {
+                                  price:
+                                    courses[day.format("YYYY-MM-DD")][0]
+                                      .priceId, // Adjust this based on your course setup
+                                  quantity: 1,
+                                },
+                              ],
+                            });
+                          } else if (isAdmin) {
                             setSelectedDay(day);
                           }
                         }}
@@ -255,37 +268,35 @@ export default function TimeTable() {
                           {day.date()}
                         </span>
 
-                        <div className="flex flex-col justify-between h-full">
+                        <div className="flex items-center flex-col justify-between h-full">
                           {(courses[day.format("YYYY-MM-DD")] || []).map(
                             (course, i) => (
                               <div
                                 key={i}
-                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64 ml-24"
+                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64"
                               >
-                                <div className="text-3xl ">
+                                <div className="text-lg lg:text-3xl ">
                                   {course.course_title}
                                 </div>
 
-                                <div className="text-2xl mb-4">
+                                <div className="flex items-center justify-center text-lg lg:text-2xl mb-4 text-center mt-2">
                                   {course.course_duration}
                                 </div>
 
-                                {/* Remove Sign Up Button and Add Register Button */}
+                                {/* Register Button for Non-admin Users */}
                                 {!isAdmin && (
-                                  <Link href="/register">
-                                    <button className="mt-auto bg-teal-500 text-white px-2 py-1 rounded">
-                                      Register
-                                    </button>
-                                  </Link>
+                                  <button className="mt-auto bg-teal-500 text-white px-2 py-1 rounded">
+                                    Register
+                                  </button>
                                 )}
                               </div>
                             )
                           )}
 
-                          {/* Show Edit/Delete only for Admin */}
+                          {/* Edit/Delete for Admin Users */}
                           {isAdmin &&
                             courses[day.format("YYYY-MM-DD")]?.length > 0 && (
-                              <div className="flex gap-4 justify-center mt-2 ">
+                              <div className="flex gap-4 justify-center mt-2">
                                 <button
                                   onClick={() =>
                                     handleEditCourse(
@@ -335,7 +346,7 @@ export default function TimeTable() {
                 onChange={(e) =>
                   setNewCourse({ ...newCourse, name: e.target.value })
                 }
-                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-2xl text-xl  "
+                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-2xl text-xl"
               />
               <input
                 type="time"
@@ -343,7 +354,7 @@ export default function TimeTable() {
                 onChange={(e) =>
                   setNewCourse({ ...newCourse, time: e.target.value })
                 }
-                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-xl text-2xl "
+                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-xl text-2xl"
               />
               <div className="flex gap-3 justify-center mt-16">
                 <button
