@@ -4,15 +4,12 @@ import Image from "next/image";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"; // Import the styles
 
 // Supabase initialization
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
-
 export default function RegisterPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [name, setName] = useState("");
@@ -75,16 +72,8 @@ export default function RegisterPage() {
         return;
       }
 
-      // Show success toast
-      toast.success("Registered successfully!", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-
-      // Redirect to login page after a delay to show the toast
-      setTimeout(() => {
-        router.push("/login");
-      }, 3000); // Delay to allow toast to show before redirect
+      // Redirect to login page after successful registration
+      router.push("/login");
     }
   };
 
@@ -169,8 +158,6 @@ export default function RegisterPage() {
           </a>
         </p>
       </div>
-      {/* Toast container to show notifications */}
-      <ToastContainer />
     </div>
   );
 }
