@@ -151,7 +151,7 @@ export default function RegisterPage() {
             Sign Up
           </button>
         </form>
-        <p className="text-center text-2xl font-semibold mt-6 text-gray-700">
+        <p className="text-center text-2xl font-semibold mt-6 text-gray-800">
           Already have an account?{" "}
           <a href="/login" className="text-teal-500 hover:underline">
             Log In
