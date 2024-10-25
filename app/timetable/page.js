@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation"; // Import for navigation
 import dayjs from "dayjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +16,8 @@ const supabaseKey =
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TimeTable() {
-  const { isAdmin } = useUser(); // Get isAdmin from context
+  const router = useRouter();
+  const { isAdmin, user } = useUser(); // Access user and isAdmin
   const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
   const [courses, setCourses] = useState({});
   const [selectedDay, setSelectedDay] = useState(null);
@@ -28,9 +30,7 @@ export default function TimeTable() {
   const fetchCourses = async () => {
     const { data, error } = await supabase.from("Courses").select("*");
     if (error) {
-      toast.error("Error fetching courses!", {
-        position: "top-center",
-      });
+      toast.error("Error fetching courses!", { position: "top-center" });
       return;
     }
 
@@ -248,13 +248,12 @@ export default function TimeTable() {
                         className="relative border border-gray-300 p-4 cursor-pointer"
                         onClick={() => {
                           if (!isAdmin && courses[day.format("YYYY-MM-DD")]) {
-                            // Redirect to Stripe for non-admin users
                             checkout({
                               lineItems: [
                                 {
                                   price:
                                     courses[day.format("YYYY-MM-DD")][0]
-                                      .priceId, // Adjust this based on your course setup
+                                      .priceId,
                                   quantity: 1,
                                 },
                               ],
@@ -285,7 +284,23 @@ export default function TimeTable() {
 
                                 {/* Register Button for Non-admin Users */}
                                 {!isAdmin && (
-                                  <button className="mt-auto bg-teal-500 text-white px-2 py-1 rounded">
+                                  <button
+                                    className="mt-auto bg-teal-500 text-white px-2 py-1 rounded"
+                                    onClick={() => {
+                                      if (!user) {
+                                        router.push("/login"); // Redirect to login if user not logged in
+                                      } else {
+                                        checkout({
+                                          lineItems: [
+                                            {
+                                              price: course.priceId,
+                                              quantity: 1,
+                                            },
+                                          ],
+                                        });
+                                      }
+                                    }}
+                                  >
                                     Register
                                   </button>
                                 )}
