@@ -4,12 +4,15 @@ import Image from "next/image";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 // Supabase initialization
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
+
 export default function RegisterPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [name, setName] = useState("");
@@ -72,13 +75,23 @@ export default function RegisterPage() {
         return;
       }
 
-      // Redirect to login page after successful registration
-      router.push("/login");
+      // Show success message
+      toast.success(`Registered successfully!`, {
+        position: "top-center",
+        autoClose: 3000,
+      });
+
+      // Redirect to login page after showing the toast
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-teal-500 to-blue-500 p-6">
+      <ToastContainer />{" "}
+      {/* Add ToastContainer to render toast notifications */}
       <div className="bg-white p-10 rounded-xl shadow-xl w-full max-w-3xl">
         <div className="flex justify-center mb-6">
           <div className="h-16 w-32 rounded-full flex items-center justify-center">

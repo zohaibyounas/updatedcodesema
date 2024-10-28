@@ -89,7 +89,7 @@ export default function HomePage() {
 
   return (
     <div id="Home">
-      <div className="relative h-full overflow-hidden">
+      <div className="relative h-full overflow-hidden overflow-x-hidden ">
         <Image
           src={images[currentImageIndex]}
           width={1000}
@@ -187,7 +187,7 @@ export default function HomePage() {
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg mr-2"
                 >
                   Logout
                 </button>

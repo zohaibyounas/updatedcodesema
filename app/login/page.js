@@ -16,10 +16,10 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export default function Page() {
   const { setIsAdmin, setUser } = useUser();
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [email, setEmail] = useState(""); // Empty by default
-  const [password, setPassword] = useState(""); // Empty by default
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [isForgotPassword, setIsForgotPassword] = useState(false); // To toggle forgot password form
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const router = useRouter();
   const [isThrottled, setIsThrottled] = useState(false);
@@ -38,7 +38,7 @@ export default function Page() {
     });
 
     if (loginError) {
-      setError(loginError.message);
+      setError("Please enter the correct password or check your email.");
       return;
     }
 
@@ -57,7 +57,7 @@ export default function Page() {
         .from("Users")
         .select("role")
         .eq("email", userEmail)
-        .single(); // Get the role of the user
+        .single();
 
       if (roleError || !userRoleData) {
         setError("Role not found or failed to fetch user role.");
@@ -91,7 +91,7 @@ export default function Page() {
 
   const handleForgotPassword = async (event) => {
     event.preventDefault();
-    setError(""); // Clear previous errors
+    setError("");
 
     if (isThrottled) {
       setError("Please wait a moment before trying again.");
@@ -106,7 +106,7 @@ export default function Page() {
       if (error.message.includes("rate limit exceeded")) {
         setError("Too many requests. Please wait a while before trying again.");
         setIsThrottled(true);
-        setTimeout(() => setIsThrottled(false), 60000); // 1 minute throttle
+        setTimeout(() => setIsThrottled(false), 60000);
       } else {
         setError(error.message);
       }
@@ -115,16 +115,15 @@ export default function Page() {
         position: "top-center",
         autoClose: 3000,
       });
-      setIsForgotPassword(false); // Switch back to login form after sending reset link
+      setIsForgotPassword(false);
       setIsThrottled(true);
-      setTimeout(() => setIsThrottled(false), 60000); // Throttle for 1 minute
+      setTimeout(() => setIsThrottled(false), 60000);
     }
   };
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-400 p-4">
-      <ToastContainer />{" "}
-      {/* Add ToastContainer to render toast notifications */}
+      <ToastContainer />
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
         <div className="flex justify-center mb-4">
           <div className="h-12 rounded-full flex items-center w-full justify-center mt-4 md:mt-6 lg:mt-10">
@@ -150,7 +149,7 @@ export default function Page() {
                 type="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)} // Update email state
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="relative mt-4">
@@ -163,10 +162,10 @@ export default function Page() {
               <input
                 className="shadow appearance-none border rounded py-3 px-4 text-gray-700 mb-3 focus:outline-none focus:shadow-outline w-full placeholder:text-xl lg:placeholder:text-2xl text-xl lg:text-3xl"
                 id="password"
-                type={passwordVisible ? "text" : "password"} // Toggles type
+                type={passwordVisible ? "text" : "password"}
                 placeholder="Password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)} // Update password state
+                onChange={(e) => setPassword(e.target.value)}
               />
               <span
                 className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl lg:text-2xl text-gray-500"
@@ -186,7 +185,7 @@ export default function Page() {
             </div>
             <p
               className="text-center text-lg md:text-xl lg:text-2xl font-semibold mt-6 text-teal-500 cursor-pointer"
-              onClick={() => setIsForgotPassword(true)} // Toggle to forgot password form
+              onClick={() => setIsForgotPassword(true)}
             >
               Forgot Password?
             </p>
@@ -206,7 +205,7 @@ export default function Page() {
                 type="email"
                 placeholder="Email"
                 value={forgotPasswordEmail}
-                onChange={(e) => setForgotPasswordEmail(e.target.value)} // Update forgot password email state
+                onChange={(e) => setForgotPasswordEmail(e.target.value)}
               />
             </div>
             {error && <p className="text-red-500 text-center mt-2">{error}</p>}
@@ -220,7 +219,7 @@ export default function Page() {
             </div>
             <p
               className="text-center text-lg md:text-xl lg:text-2xl font-semibold mt-6 text-teal-500 cursor-pointer"
-              onClick={() => setIsForgotPassword(false)} // Switch back to login form
+              onClick={() => setIsForgotPassword(false)}
             >
               Back to Login
             </p>
