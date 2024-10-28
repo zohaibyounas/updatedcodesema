@@ -1,29 +1,29 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { useRouter } from "next/navigation"; // Import for navigation
+import { useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "../context/UserContex";
-import Link from "next/link"; // Import Link for navigation to register page
-import { checkout } from "../api/webhook/checkout"; // Import checkout function
+import Link from "next/link";
+import { checkout } from "../api/webhook/checkout";
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TimeTable() {
   const router = useRouter();
-  const { isAdmin, user } = useUser(); // Access user and isAdmin
+  const { isAdmin, user } = useUser();
   const [currentMonth, setCurrentMonth] = useState(dayjs().startOf("month"));
   const [courses, setCourses] = useState({});
   const [selectedDay, setSelectedDay] = useState(null);
   const [newCourse, setNewCourse] = useState({ name: "", time: "" });
-  const [editingCourse, setEditingCourse] = useState(null); // For editing course
-  const [isDeleting, setIsDeleting] = useState(false); // New state to track deletion
+  const [editingCourse, setEditingCourse] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const modalRef = useRef(null);
 
   // Fetch courses from the database
@@ -57,11 +57,8 @@ export default function TimeTable() {
     setCurrentMonth(currentMonth.add(1, "month"));
   };
 
-  const startOfMonth = currentMonth.startOf("month");
-  const endOfMonth = currentMonth.endOf("month");
-
   const days = [];
-  let day = startOfMonth.startOf("week");
+  let day = currentMonth.startOf("month").startOf("week");
 
   for (let i = 0; i < 35; i++) {
     days.push(day);
@@ -93,15 +90,11 @@ export default function TimeTable() {
 
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
-
-    // Refetch courses to update the UI
     await fetchCourses();
-    toast.success("Course added successfully!", {
-      position: "top-center",
-    });
+    toast.success("Course added successfully!", { position: "top-center" });
   };
 
-  const handleEditCourse = async (course) => {
+  const handleEditCourse = (course) => {
     setEditingCourse(course);
     setNewCourse({ name: course.course_title, time: course.course_duration });
     setSelectedDay(dayjs(course.course_schedule));
@@ -126,8 +119,6 @@ export default function TimeTable() {
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
     setEditingCourse(null);
-
-    // Refetch courses to update the UI
     await fetchCourses();
     toast.success("Course updated successfully!", {
       position: "top-center",
@@ -143,9 +134,7 @@ export default function TimeTable() {
       .eq("id", course.id);
 
     if (error) {
-      toast.error("Error deleting the course!", {
-        position: "top-center",
-      });
+      toast.error("Error deleting the course!", { position: "top-center" });
       setIsDeleting(false);
       return;
     }
@@ -153,10 +142,7 @@ export default function TimeTable() {
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
     setEditingCourse(null);
-
-    // Refetch courses to update the UI
     await fetchCourses();
-
     setIsDeleting(false);
     toast.success("Course deleted successfully!", {
       position: "top-center",
@@ -171,7 +157,6 @@ export default function TimeTable() {
         setEditingCourse(null);
       }
     };
-
     document.addEventListener("mousedown", handleOutsideClick);
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
@@ -222,7 +207,7 @@ export default function TimeTable() {
                   "Samstag",
                   "Sonntag",
                 ].map((day) => (
-                  <th key={day} className="whitespace-nowrap p-3 ">
+                  <th key={day} className="whitespace-nowrap p-3">
                     {day}
                   </th>
                 ))}
@@ -235,7 +220,7 @@ export default function TimeTable() {
                     <span className="block px-2 py-1">{`${
                       9 + rowIndex
                     }:00`}</span>
-                    <span className="block px-2 py-1 ">-</span>
+                    <span className="block px-2 py-1">-</span>
                     <span className="block px-2 py-1">{`${
                       10 + rowIndex
                     }:00`}</span>
@@ -246,42 +231,24 @@ export default function TimeTable() {
                       <td
                         key={colIndex}
                         className="relative border border-gray-300 p-4 cursor-pointer"
-                        // onClick={() => {
-                        //   if (!isAdmin) {
-                        //     checkout({
-                        //       lineItems: [
-                        //         {
-                        //           price:
-                        //             courses[day.format("YYYY-MM-DD")][0]
-                        //               .priceId,
-                        //           quantity: 1,
-                        //         },
-                        //       ],
-                        //     });
-                        //   } else if (isAdmin) {
-                        //     setSelectedDay(day);
-                        //   }
-                        // }}
+                        onClick={() => isAdmin && setSelectedDay(day)}
                       >
                         <span className="absolute top-0 right-0 m-1 text-black text-xl">
                           {day.date()}
                         </span>
-
                         <div className="flex items-center flex-col justify-between h-full">
                           {(courses[day.format("YYYY-MM-DD")] || []).map(
                             (course, i) => (
                               <div
                                 key={i}
-                                className="text-black cursor-pointer flex flex-col h-full justify-between w-64"
+                                className="text-black flex flex-col h-full justify-between w-64"
                               >
-                                <div className="text-lg lg:text-3xl ">
+                                <div className="text-lg lg:text-3xl">
                                   {course.course_title}
                                 </div>
-
                                 <div className="flex items-center justify-center text-lg lg:text-2xl mb-4 text-center mt-2">
                                   {course.course_duration}
                                 </div>
-
                                 {/* Register Button for Non-admin Users */}
                                 {!isAdmin && (
                                   <button
@@ -300,7 +267,6 @@ export default function TimeTable() {
                               </div>
                             )
                           )}
-
                           {/* Edit/Delete for Admin Users */}
                           {isAdmin &&
                             courses[day.format("YYYY-MM-DD")]?.length > 0 && (
