@@ -5,53 +5,35 @@ export async function POST(request) {
   try {
     const { name, email, subject, message, option } = await request.json();
 
+    // Create a transporter with the email service details.
     const transporter = nodemailer.createTransport({
       host: "smtp.strato.com",
       port: 465,
       secure: true,
       auth: {
         user: "sema@body-mirror.com",
-        pass: "@Semabm123@",
+        pass: "@Semabm123@", // Replace with your actual password
       },
     });
 
+    // Compose the email to send to Sema with all the user's form data.
     const mailOptionsToSema = {
       from: "sema@body-mirror.com",
       to: "sema@body-mirror.com",
       subject: `New Contact Form Submission: ${subject}`,
       text: `
-      Name: ${name}
-      Email: ${email}
-      Betreff: ${subject}
-      Nachricht: ${message}
-      Ich möchte: ${option}
-    `,
+        You have received a new message from the contact form on your website.
+
+        Name: ${name}
+        Email: ${email}
+        Subject: ${subject}
+        Message: ${message}
+        Option: ${option}
+      `,
     };
 
-    // Email to the customer
-    const mailOptionsToCustomer = {
-      from: "sema@body-mirror.com",
-      to: email,
-      subject: "Your message has been received",
-      text: `
-Dear ${name},
-
-Thank you for getting in touch with us. We have received your message and will get back to you as soon as possible.
-
-Here are the details we received from you:
-Name: ${name}
-Email: ${email}
-Betreff: ${subject}
-Nachricht: ${message}
-Ich möchte: ${option}
-
-Best regards,
-Sema Taskin
-`,
-    };
-
+    // Send the email to Sema.
     await transporter.sendMail(mailOptionsToSema);
-    await transporter.sendMail(mailOptionsToCustomer);
 
     return NextResponse.json(
       { message: "Email sent successfully" },

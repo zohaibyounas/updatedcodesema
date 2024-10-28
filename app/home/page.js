@@ -10,6 +10,7 @@ import Courses from "../courses/page";
 import Footer from "../footer/page";
 import { createClient } from "@supabase/supabase-js";
 import Testimonials from "../testimonials/page";
+import ContectUs from "../_components/ContectUs";
 import TimeTable from "../timetable/page";
 import Link from "next/link";
 import { useUser } from "../context/UserContex"; // Using the user context
@@ -29,7 +30,7 @@ const images = [
 ];
 
 const navItemsLeft = ["Home", "Über", "Kurse"];
-const navItemsRight = ["Vorteile", "Kalender", "Kontakt"];
+const navItemsRight = ["Vorteile", "Kalender"];
 
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
@@ -241,6 +242,7 @@ export default function HomePage() {
       <AboutUs />
       <TimeTable />
       <Testimonials />
+      <ContectUs />
       <Footer />
     </div>
   );

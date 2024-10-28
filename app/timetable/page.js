@@ -246,22 +246,22 @@ export default function TimeTable() {
                       <td
                         key={colIndex}
                         className="relative border border-gray-300 p-4 cursor-pointer"
-                        onClick={() => {
-                          if (!isAdmin) {
-                            checkout({
-                              lineItems: [
-                                {
-                                  price:
-                                    courses[day.format("YYYY-MM-DD")][0]
-                                      .priceId,
-                                  quantity: 1,
-                                },
-                              ],
-                            });
-                          } else if (isAdmin) {
-                            setSelectedDay(day);
-                          }
-                        }}
+                        // onClick={() => {
+                        //   if (!isAdmin) {
+                        //     checkout({
+                        //       lineItems: [
+                        //         {
+                        //           price:
+                        //             courses[day.format("YYYY-MM-DD")][0]
+                        //               .priceId,
+                        //           quantity: 1,
+                        //         },
+                        //       ],
+                        //     });
+                        //   } else if (isAdmin) {
+                        //     setSelectedDay(day);
+                        //   }
+                        // }}
                       >
                         <span className="absolute top-0 right-0 m-1 text-black text-xl">
                           {day.date()}
@@ -287,18 +287,11 @@ export default function TimeTable() {
                                   <button
                                     className="mt-auto bg-teal-500 text-white px-2 py-1 rounded"
                                     onClick={() => {
-                                      if (!user) {
-                                        router.push("/login"); // Redirect to login if user not logged in
-                                      } else {
-                                        checkout({
-                                          lineItems: [
-                                            {
-                                              price: course.priceId,
-                                              quantity: 1,
-                                            },
-                                          ],
+                                      document
+                                        .getElementById("Kontakt")
+                                        .scrollIntoView({
+                                          behavior: "smooth",
                                         });
-                                      }
                                     }}
                                   >
                                     Register
@@ -345,11 +338,11 @@ export default function TimeTable() {
 
         {selectedDay && !isDeleting && (
           <div
-            className="fixed inset-0 flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 flex items-center justify-center z-50"
             ref={modalRef}
           >
-            <div className="bg-white w-full max-w-lg sm:w-10/12 md:w-3/4 lg:w-1/2 xl:w-1/3 p-6 rounded shadow-lg mb-32">
-              <h4 className="mb-6 text-2xl sm:text-3xl font-semibold text-center">
+            <div className="bg-white lg:w-[30%] w-[90%] lg:h-[40%] sm:h-[37%] font-bold p-6 rounded shadow-lg mb-32">
+              <h4 className="mb-8 text-4xl mt-8">
                 {editingCourse
                   ? `Edit Course for ${selectedDay.format("MMMM DD, YYYY")}`
                   : `Add Course for ${selectedDay.format("MMMM DD, YYYY")}`}
@@ -361,7 +354,7 @@ export default function TimeTable() {
                 onChange={(e) =>
                   setNewCourse({ ...newCourse, name: e.target.value })
                 }
-                className="block w-full p-4 border border-gray-300 rounded mb-4 text-lg placeholder:text-lg sm:placeholder:text-xl"
+                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-2xl text-xl"
               />
               <input
                 type="time"
@@ -369,26 +362,26 @@ export default function TimeTable() {
                 onChange={(e) =>
                   setNewCourse({ ...newCourse, time: e.target.value })
                 }
-                className="block w-full p-4 border border-gray-300 rounded mb-4 text-lg"
+                className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-xl text-2xl"
               />
-              <div className="flex gap-4 justify-center">
+              <div className="flex gap-3 justify-center mt-16">
                 <button
                   onClick={handleCancel}
-                  className="bg-red-500 text-white px-6 py-2 rounded-lg text-lg sm:text-xl"
+                  className="bg-red-500 text-white px-8 py-4 rounded-lg text-xl"
                 >
                   Cancel
                 </button>
                 {editingCourse ? (
                   <button
                     onClick={handleSaveEditedCourse}
-                    className="bg-blue-500 text-white px-6 py-2 rounded-lg text-lg sm:text-xl"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xl font-bold"
                   >
                     Save Changes
                   </button>
                 ) : (
                   <button
                     onClick={() => handleAddCourse(selectedDay)}
-                    className="bg-blue-500 text-white px-6 py-2 rounded-lg text-lg sm:text-xl"
+                    className="bg-blue-500 text-white px-4 py-2 rounded-lg text-xl font-bold"
                   >
                     Add Course
                   </button>

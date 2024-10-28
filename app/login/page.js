@@ -168,7 +168,7 @@ export default function Page() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <span
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl lg:text-2xl text-gray-500"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl lg:text-3xl text-gray-500 mt-4"
                 onClick={togglePasswordVisibility}
               >
                 {passwordVisible ? <FaEyeSlash /> : <FaEye />}
