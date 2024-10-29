@@ -97,7 +97,7 @@ export default function HomePage() {
           height={500}
           quality={100}
           alt="Lady telling about fitness"
-          className="duration-500 ease-in-out transform w-full h-[35rem] md:h-full object-fill object-center transition-transform"
+          className="duration-500 ease-in-out transform w-full h-[35rem] md:h-full object-center transition-transform object-cover"
           style={{ transition: "transform 1s ease-in-out" }}
         />
 

@@ -26,7 +26,6 @@ export default function TimeTable() {
   const [isDeleting, setIsDeleting] = useState(false);
   const modalRef = useRef(null);
 
-  // Fetch courses from the database
   const fetchCourses = async () => {
     const { data, error } = await supabase.from("Courses").select("*");
     if (error) {
@@ -170,7 +169,7 @@ export default function TimeTable() {
 
   return (
     <div className="py-12" id="Kalender">
-      <div className="relative mx-auto flex flex-col items-center justify-center w-11/12 sm:w-4/5 overflow-x-auto text-center min-h-[75vh]">
+      <div className="relative mx-auto flex flex-col items-center justify-center w-full overflow-x-hidden text-center min-h-[75vh]">
         <h3 className="mb-6 text-2xl text-black">Wochenplan</h3>
 
         <div className="mb-6 flex items-center justify-center gap-4 text-black">
@@ -190,14 +189,12 @@ export default function TimeTable() {
         </div>
 
         <div
-          className={`w-full overflow-x-auto ${
-            selectedDay && !isDeleting ? "blur-sm" : ""
-          }`}
+          className={`w-full ${selectedDay && !isDeleting ? "blur-sm" : ""}`}
         >
-          <table className="w-full border-collapse text-xs sm:text-sm md:text-lg">
+          <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[25rem]">
             <thead className="bg-stone-300 text-black">
               <tr>
-                <th className="whitespace-nowrap p-3">Uhrzeit</th>
+                <th className="p-3">Uhrzeit</th>
                 {[
                   "Montag",
                   "Dienstag",
@@ -207,7 +204,7 @@ export default function TimeTable() {
                   "Samstag",
                   "Sonntag",
                 ].map((day) => (
-                  <th key={day} className="whitespace-nowrap p-3">
+                  <th key={day} className="p-3">
                     {day}
                   </th>
                 ))}
@@ -216,24 +213,19 @@ export default function TimeTable() {
             <tbody>
               {Array.from({ length: 5 }).map((_, rowIndex) => (
                 <tr key={rowIndex}>
-                  <th className="whitespace-nowrap border border-gray-300 bg-stone-300 p-4 text-black">
-                    <span className="block px-2 py-1">{`${
-                      9 + rowIndex
-                    }:00`}</span>
-                    <span className="block px-2 py-1">-</span>
-                    <span className="block px-2 py-1">{`${
-                      10 + rowIndex
-                    }:00`}</span>
+                  <th className="border border-gray-300 bg-stone-300 p-2 md:p-4">
+                    <span>{`${9 + rowIndex}:00`}</span> -{" "}
+                    <span>{`${10 + rowIndex}:00`}</span>
                   </th>
                   {days
                     .slice(rowIndex * 7, (rowIndex + 1) * 7)
                     .map((day, colIndex) => (
                       <td
                         key={colIndex}
-                        className="relative border border-gray-300 p-4 cursor-pointer"
+                        className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer"
                         onClick={() => isAdmin && setSelectedDay(day)}
                       >
-                        <span className="absolute top-0 right-0 m-1 text-black text-xl">
+                        <span className="absolute top-0 right-0 m-1 text-black text-xs sm:text-base">
                           {day.date()}
                         </span>
                         <div className="flex items-center flex-col justify-between h-full">
@@ -241,18 +233,17 @@ export default function TimeTable() {
                             (course, i) => (
                               <div
                                 key={i}
-                                className="text-black flex flex-col h-full justify-between w-64"
+                                className="text-black flex flex-col h-full justify-between mt-7"
                               >
-                                <div className="text-lg lg:text-3xl">
+                                <div className="text-xs md:text-2xl ">
                                   {course.course_title}
                                 </div>
-                                <div className="flex items-center justify-center text-lg lg:text-2xl mb-4 text-center mt-2">
+                                <div className="flex items-center justify-center text-xs md:text-xl mb-1 mt-1 ">
                                   {course.course_duration}
                                 </div>
-                                {/* Register Button for Non-admin Users */}
                                 {!isAdmin && (
                                   <button
-                                    className="mt-auto bg-teal-500 text-white px-2 py-1 rounded"
+                                    className="mt-auto bg-teal-400 text-white px-2 py-0.5 font-semibold md:px-6 md:py-2 rounded text-xs md:text-xl mb-6"
                                     onClick={() => {
                                       document
                                         .getElementById("Kontakt")
@@ -267,17 +258,16 @@ export default function TimeTable() {
                               </div>
                             )
                           )}
-                          {/* Edit/Delete for Admin Users */}
                           {isAdmin &&
                             courses[day.format("YYYY-MM-DD")]?.length > 0 && (
-                              <div className="flex gap-4 justify-center mt-2">
+                              <div className="flex gap-1 justify-center mt-1">
                                 <button
                                   onClick={() =>
                                     handleEditCourse(
                                       courses[day.format("YYYY-MM-DD")][0]
                                     )
                                   }
-                                  className="bg-green-500 text-white px-4 py-2 rounded-lg"
+                                  className="bg-green-500 text-white px-2 py-0.5 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
                                 >
                                   Edit
                                 </button>
@@ -287,7 +277,7 @@ export default function TimeTable() {
                                       courses[day.format("YYYY-MM-DD")][0]
                                     )
                                   }
-                                  className="bg-red-500 text-white px-4 py-2 rounded-lg"
+                                  className="bg-red-500 text-white px-2 py-1 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
                                 >
                                   Delete
                                 </button>

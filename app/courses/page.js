@@ -203,11 +203,11 @@ const classDetails = [
     title: "Dein Pilates-Erlebnis – Flexibel, Effizient und Ortsunabhängig",
     description:
       "Ich biete wöchentliche Pilates-Livekurse via Zoom an – das bedeutet für dich: kein Fahrstress, volle Flexibilität und maximaler Zeitgewinn. Pilates direkt von zu Hause aus, mit persönlicher Anleitung und live gestreamt. Du kannst jederzeit einsteigen, und keine Woche ist wie die andere – ich rotiere die Kursarten, damit es nie langweilig wird.",
-    options: [
-      {
-        buttonText: "Jetzt mehr erfahren",
-      },
-    ],
+    // options: [
+    //   {
+    //     buttonText: "Jetzt mehr erfahren",
+    //   },
+    // ],
   },
   {
     id: 2,
@@ -217,23 +217,23 @@ const classDetails = [
       "🌶 Pilates Mobility – Deine Wirbelsäule und Beweglichkeit stehen im Fokus. Diese Stunde widmet sich der funktionellen Mobilität, damit du dich im Alltag freier und geschmeidiger bewegen kannst.\n\n" +
       "🌶 Pilates Strength – Wir trainieren die größeren Muskelgruppen und bauen gezielt Kraft auf. Ein perfekter Mix für mehr Stabilität und Stärke.\n\n" +
       "🌶 Pilates Burn – Der Name sagt es: Ein Ganzkörper-Burn! In dieser Stunde fokussieren wir uns oft auf spezielle Körperbereiche für ein intensives Trainingserlebnis.",
-    options: [
-      {
-        buttonText: "Jetzt Kurse entdecken",
-      },
-    ],
+    // options: [
+    //   {
+    //     buttonText: "Jetzt Kurse entdecken",
+    //   },
+    // ],
   },
-  {
-    id: 3,
-    title: "Warum Live-Kurse?",
-    description:
-      "Ach ja, und mich kannst du dabei nicht einfach auf Pause drücken. Die Live-Atmosphäre bringt nicht nur mehr Motivation, sondern auch eine persönliche Betreuung. Du bist live dabei, kannst direkt Fragen stellen und deine Technik verbessern. Gemeinsam holen wir das Beste aus dir heraus!",
-    options: [
-      {
-        buttonText: "Live-Kurse ansehen",
-      },
-    ],
-  },
+  // {
+  //   id: 3,
+  //   title: "Warum Live-Kurse?",
+  //   description:
+  //     "Ach ja, und mich kannst du dabei nicht einfach auf Pause drücken. Die Live-Atmosphäre bringt nicht nur mehr Motivation, sondern auch eine persönliche Betreuung. Du bist live dabei, kannst direkt Fragen stellen und deine Technik verbessern. Gemeinsam holen wir das Beste aus dir heraus!",
+  //   options: [
+  //     {
+  //       buttonText: "Live-Kurse ansehen",
+  //     },
+  //   ],
+  // },
 ];
 
 export default function Courses() {
