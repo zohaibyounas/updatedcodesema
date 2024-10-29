@@ -86,6 +86,23 @@ export default function HomePage() {
     }
   };
 
+  const handleScrollTo = (section) => {
+    const sectionIdMap = {
+      Home: "Home",
+      Über: "Über",
+      Kurse: "Kurse",
+      Vorteile: "Vorteile",
+      Kalender: "Kalender",
+      Kontakt: "Kontakt",
+    };
+    const sectionId = sectionIdMap[section];
+    if (sectionId) {
+      document
+        .getElementById(sectionId)
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   if (!isMounted) return null; // Return null if the component is not mounted yet
 
   return (
@@ -117,7 +134,7 @@ export default function HomePage() {
       </div>
 
       {/* Header with navigation */}
-      <div className="absolute left-0 top-0 w-full shadow-lg">
+      <div className="fixed top-0 z-50 left-0 w-full shadow-lg bg-white ">
         {/* Large screen navigation */}
         <div className="hidden bg-white px-4 py-2 md:flex md:items-center md:justify-between">
           <div className="flex-1">
@@ -132,90 +149,64 @@ export default function HomePage() {
           <div className="flex-1 flex justify-end mr-24">
             <Navbar navItems={navItemsRight} />
           </div>
-          <div className="flex gap-4">
-            {user ? (
+          <div className="flex gap-4 items-center">
+            {user && isAdmin && (
               <>
-                <span className="lg:text-2xl text-xs font-bold mr-6 mt-5">
-                  wellcome, {user.email}
+                {/* Show email on large screens */}
+                <span className="lg:block hidden text-xl font-bold mr-6">
+                  {user.email}
                 </span>
+                {/* Logout button visible on all screen sizes */}
                 <button
                   onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-4 px-5 text-2xl rounded-lg"
+                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm sm:text-lg"
                 >
                   Logout
                 </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login">
-                  <button className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-4 px-8 text-2xl rounded-lg">
-                    Login
-                  </button>
-                </Link>
-                <Link href="/register">
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-8 text-2xl rounded-lg">
-                    Register
-                  </button>
-                </Link>
               </>
             )}
           </div>
         </div>
 
-        {/* Hamburger menu and icon for small screens */}
+        {/* Small screen navigation */}
         <div className="relative flex h-20 items-center justify-between bg-white p-4 md:hidden">
+          {/* Centered Logo on Small Screens */}
+          <div className="absolute left-1/2 transform -translate-x-1/2">
+            <Logo className="h-16" onClick={() => router.push("/")} />
+          </div>
+
+          {/* Navigation dropdown for small screens */}
           <select
             className="text-black bg-white border-none cursor-pointer"
             onChange={(e) => handleScrollTo(e.target.value)}
           >
             <option value="">Where to Go?</option>
-            <option value="Vorteile">deine Benefits</option>
-            <option value="Über">⁠über bodymirror und Pilates</option>
-            <option value="Kalender">Wochenplan</option>
-            <option value="Kurse">Angebote</option>
+            <option value="Home">Home</option>
+            <option value="Über">Über</option>
+            <option value="Kurse">Kurse</option>
+            <option value="Vorteile">Vorteile</option>
+            <option value="Kalender">Kalender</option>
           </select>
 
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            {/* Hidden on small screens */}
-          </div>
+          {/* Contact Button on Small Screens when no user is logged in */}
+          {!user && (
+            <button
+              className="absolute right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
+              onClick={() => handleScrollTo("Kontakt")}
+            >
+              Kontakt
+            </button>
+          )}
 
-          {/* Show Welcome message and Logout on small screens */}
-          <div className="absolute left-[75%] top-1/2 transform -translate-x-1/2 -translate-y-1/2 flex gap-4">
-            {user ? (
-              <>
-                <span className="sm:text-xs mt-2 mr-6 font-bold">
-                  welcome,{user.email}
-                </span>
-                <button
-                  onClick={handleLogout}
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg mr-2"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link href="/login">
-                  <button className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 px-4 text-sm rounded-lg">
-                    Login
-                  </button>
-                </Link>
-                <Link href="/register">
-                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 text-sm rounded-lg">
-                    Register
-                  </button>
-                </Link>
-              </>
-            )}
-          </div>
-
-          <Image
-            src="/shopping-bag.png"
-            alt="Shopping Bag"
-            width="16"
-            height="16"
-            className="cursor-pointer ml-4"
-          />
+          {/* Logout button for small screens when admin is logged in */}
+          {user && isAdmin && (
+            <button
+              onClick={handleLogout}
+              className="absolute right-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
+            >
+              Logout
+            </button>
+          )}
         </div>
       </div>
 
@@ -237,12 +228,12 @@ export default function HomePage() {
       </div>
 
       {/* Components */}
-      <Benefits />
-      <Courses />
-      <AboutUs />
-      <TimeTable />
+      <Benefits id="Benefits" />
+      <Courses id="Courses" />
+      <AboutUs id="Über" />
+      <TimeTable id="Kalender" />
       <Testimonials />
-      <ContectUs />
+      <ContectUs id="Kontakt" />
       <Footer />
     </div>
   );

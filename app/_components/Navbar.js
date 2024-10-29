@@ -5,7 +5,7 @@ import { handleScrollTo } from "../_helpers/scroll";
 
 export default function Navbar({ navItems }) {
   return (
-    <ul className="flex items-center gap-12 text-xl xl:text-3xl text-black">
+    <ul className="flex items-center gap-12 text-xl xl:text-3xl text-black ">
       {navItems.map((item) => (
         <li
           key={item}
