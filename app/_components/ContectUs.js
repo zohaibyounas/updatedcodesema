@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -30,20 +31,53 @@ export default function Contact() {
       });
 
       if (response.ok) {
-        alert("Your message has been sent!");
-        router.push("/");
+        toast.success("Your message has been sent!", {
+          duration: 3000,
+          style: {
+            padding: "16px",
+            fontSize: "18px",
+            borderRadius: "8px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
+        setTimeout(() => {
+          router.push("/"); // Redirect after a short delay
+        }, 3000);
       } else {
         const errorData = await response.json();
-        alert(`There was an error sending your message: ${errorData.message}`);
+        toast.error(`There was an error: ${errorData.message}`, {
+          style: {
+            padding: "16px",
+            fontSize: "18px",
+            borderRadius: "8px",
+            background: "#333",
+            color: "#fff",
+          },
+        });
       }
     } catch (error) {
       console.error("Error sending message:", error);
-      alert("There was an error sending your message. Please try again.");
+      toast.error(
+        "There was an error sending your message. Please try again.",
+        {
+          style: {
+            padding: "16px",
+            fontSize: "18px",
+            borderRadius: "8px",
+            background: "#333",
+            color: "#fff",
+          },
+        }
+      );
     }
   };
 
   return (
     <div className="p-8 sm:p-20 bg-white" id="Kontakt">
+      {/* Centered Toaster */}
+      <Toaster position="top-center" reverseOrder={false} />{" "}
+      {/* Toast provider */}
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-6">
           Kontakt
