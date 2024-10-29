@@ -191,7 +191,7 @@ export default function HomePage() {
           {/* Contact Button on Small Screens when no user is logged in */}
           {!user && (
             <button
-              className="absolute right-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
+              className="absolute right-4 bg-stone-600 hover:bg-stone-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
               onClick={() => handleScrollTo("Kontakt")}
             >
               Kontakt
