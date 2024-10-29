@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-
+import Navbar from "../_components/Navbar";
 export default function AboutUs() {
   return (
     <div
