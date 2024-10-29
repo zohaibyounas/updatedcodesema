@@ -183,7 +183,7 @@ export default function HomePage() {
             <option value="">Where to Go?</option>
             <option value="Home">Home</option>
             <option value="Über">Über</option>
-            <option value="Kurse">Kurse</option>
+            <option value="Kurse">Warum uns wählen</option>
             <option value="Vorteile">Vorteile</option>
             <option value="Kalender">Kalender</option>
           </select>
@@ -228,8 +228,8 @@ export default function HomePage() {
       </div>
 
       {/* Components */}
-      <Benefits id="Benefits" />
       <Courses id="Courses" />
+      <Benefits id="Benefits" />
       <AboutUs id="Über" />
       <TimeTable id="Kalender" />
       <Testimonials />
