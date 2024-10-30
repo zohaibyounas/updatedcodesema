@@ -24,7 +24,7 @@ function Testimonials() {
   }
 
   return (
-    <div className="my-16 bg-stone-300 py-8 md:my-32 md:py-16">
+    <div className="my-1 bg-stone-300 py-8 md:my-32 md:py-16">
       <div className="flex flex-col-reverse gap-8 md:flex-row">
         <div className="flex flex-col justify-center p-8 md:w-1/2">
           <div className="mb-6 flex items-center gap-4">
