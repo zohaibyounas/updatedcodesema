@@ -7,12 +7,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createClient } from "@supabase/supabase-js";
 import { useUser } from "../context/UserContex";
-import Link from "next/link";
-import { checkout } from "../api/webhook/checkout";
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TimeTable() {
@@ -149,26 +147,13 @@ export default function TimeTable() {
     });
   };
 
-  useEffect(() => {
-    const handleOutsideClick = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) {
-        setSelectedDay(null);
-        setEditingCourse(null);
-      }
-    };
-    document.addEventListener("mousedown", handleOutsideClick);
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, []);
-
   const handleCancel = () => {
     setSelectedDay(null);
     setEditingCourse(null);
   };
 
   return (
-    <div className="py-12" id="Kalender">
+    <div className="py-12 -mt-20 sm:-mt-0 lg:-mt-0" id="Kalender">
       <div className="relative mx-auto flex flex-col items-center justify-center w-full overflow-x-hidden text-center min-h-[75vh]">
         <h3 className="mb-6 text-2xl text-black">Wochenplan</h3>
 
@@ -191,105 +176,109 @@ export default function TimeTable() {
         <div
           className={`w-full ${selectedDay && !isDeleting ? "blur-sm" : ""}`}
         >
-          <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[25rem]">
-            <thead className="bg-stone-300 text-black">
-              <tr>
-                <th className="p-3">Uhrzeit</th>
-                {[
-                  "Montag",
-                  "Dienstag",
-                  "Mittwoch",
-                  "Donnerstag",
-                  "Freitag",
-                  "Samstag",
-                  "Sonntag",
-                ].map((day) => (
-                  <th key={day} className="p-3">
-                    {day}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {Array.from({ length: 5 }).map((_, rowIndex) => (
-                <tr key={rowIndex}>
-                  <th className="border border-gray-300 bg-stone-300 p-2 md:p-4">
-                    <span>{`${9 + rowIndex}:00`}</span> -{" "}
-                    <span>{`${10 + rowIndex}:00`}</span>
-                  </th>
-                  {days
-                    .slice(rowIndex * 7, (rowIndex + 1) * 7)
-                    .map((day, colIndex) => (
-                      <td
-                        key={colIndex}
-                        className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer"
-                        onClick={() => isAdmin && setSelectedDay(day)}
-                      >
-                        <span className="absolute top-0 left-0 m-1 text-black text-xs sm:text-base">
-                          {day.date()}
-                        </span>
-                        <div className="flex items-center flex-col justify-between h-full">
-                          {(courses[day.format("YYYY-MM-DD")] || []).map(
-                            (course, i) => (
-                              <div
-                                key={i}
-                                className="text-black flex flex-col h-full justify-between mt-7"
-                              >
-                                <div className="text-xs md:text-2xl ">
-                                  {course.course_title}
-                                </div>
-                                <div className="flex items-center justify-center text-xs md:text-xl mb-1 mt-1 ">
-                                  {course.course_duration}
-                                </div>
-                                {!isAdmin && (
-                                  <button
-                                    className="mt-auto bg-teal-400 text-white px-2 py-0.5 font-semibold md:px-6 md:py-2 rounded text-xs md:text-xl mb-6"
-                                    onClick={() => {
-                                      document
-                                        .getElementById("Kontakt")
-                                        .scrollIntoView({
-                                          behavior: "smooth",
-                                        });
-                                    }}
-                                  >
-                                    Register
-                                  </button>
-                                )}
-                              </div>
-                            )
-                          )}
-                          {isAdmin &&
-                            courses[day.format("YYYY-MM-DD")]?.length > 0 && (
-                              <div className="flex gap-1 justify-center mt-1">
-                                <button
-                                  onClick={() =>
-                                    handleEditCourse(
-                                      courses[day.format("YYYY-MM-DD")][0]
-                                    )
-                                  }
-                                  className="bg-green-500 text-white px-2 py-0.5 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
-                                >
-                                  Edit
-                                </button>
-                                <button
-                                  onClick={() =>
-                                    handleDeleteCourse(
-                                      courses[day.format("YYYY-MM-DD")][0]
-                                    )
-                                  }
-                                  className="bg-red-500 text-white px-2 py-1 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
-                                >
-                                  Delete
-                                </button>
-                              </div>
-                            )}
-                        </div>
-                      </td>
-                    ))}
+          <div className="overflow-x-auto">
+            {" "}
+            {/* Added overflow for small screens */}
+            <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
+              <thead className="bg-stone-300 text-black">
+                <tr>
+                  <th className="p-3">Uhrzeit</th>
+                  {[
+                    "Montag",
+                    "Dienstag",
+                    "Mittwoch",
+                    "Donnerstag",
+                    "Freitag",
+                    "Samstag",
+                    "Sonntag",
+                  ].map((day) => (
+                    <th key={day} className="p-3">
+                      {day}
+                    </th>
+                  ))}
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {Array.from({ length: 5 }).map((_, rowIndex) => (
+                  <tr key={rowIndex}>
+                    <th className="border border-gray-300 bg-stone-300 p-2 md:p-4">
+                      <span>{`${9 + rowIndex}:00`}</span> -{" "}
+                      <span>{`${10 + rowIndex}:00`}</span>
+                    </th>
+                    {days
+                      .slice(rowIndex * 7, (rowIndex + 1) * 7)
+                      .map((day, colIndex) => (
+                        <td
+                          key={colIndex}
+                          className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer"
+                          onClick={() => isAdmin && setSelectedDay(day)}
+                        >
+                          <span className="absolute top-0 left-0 m-1 text-black text-xs sm:text-base">
+                            {day.date()}
+                          </span>
+                          <div className="flex items-center flex-col justify-between h-full">
+                            {(courses[day.format("YYYY-MM-DD")] || []).map(
+                              (course, i) => (
+                                <div
+                                  key={i}
+                                  className="text-black flex flex-col h-full justify-between mt-7"
+                                >
+                                  <div className="text-xs md:text-2xl ">
+                                    {course.course_title}
+                                  </div>
+                                  <div className="flex items-center justify-center text-xs md:text-xl mb-1 mt-1 ">
+                                    {course.course_duration}
+                                  </div>
+                                  {!isAdmin && (
+                                    <button
+                                      className="mt-auto bg-teal-400 text-white px-2 py-0.5 font-semibold md:px-6 md:py-2 rounded text-xs md:text-xl mb-6"
+                                      onClick={() => {
+                                        document
+                                          .getElementById("Kontakt")
+                                          .scrollIntoView({
+                                            behavior: "smooth",
+                                          });
+                                      }}
+                                    >
+                                      Register
+                                    </button>
+                                  )}
+                                </div>
+                              )
+                            )}
+                            {isAdmin &&
+                              courses[day.format("YYYY-MM-DD")]?.length > 0 && (
+                                <div className="flex gap-1 justify-center mt-1">
+                                  <button
+                                    onClick={() =>
+                                      handleEditCourse(
+                                        courses[day.format("YYYY-MM-DD")][0]
+                                      )
+                                    }
+                                    className="bg-green-500 text-white px-2 py-0.5 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteCourse(
+                                        courses[day.format("YYYY-MM-DD")][0]
+                                      )
+                                    }
+                                    className="bg-red-500 text-white px-2 py-1 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              )}
+                          </div>
+                        </td>
+                      ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {selectedDay && !isDeleting && (
