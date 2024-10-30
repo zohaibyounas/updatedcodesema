@@ -61,7 +61,7 @@ export default function HomePage() {
     stopAutoSlide(); // Clear any existing interval
     intervalId.current = setInterval(() => {
       slideToNextImage();
-    }, 4000);
+    }, 3000);
   };
 
   const stopAutoSlide = () => {
