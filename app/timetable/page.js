@@ -182,13 +182,13 @@ export default function TimeTable() {
                 <tr>
                   <th className="p-2 md:p-3">Uhrzeit</th>
                   {[
+                    "Sonntag",
                     "Montag",
                     "Dienstag",
                     "Mittwoch",
                     "Donnerstag",
                     "Freitag",
                     "Samstag",
-                    "Sonntag",
                   ].map((day) => (
                     <th key={day} className="p-2 md:p-3">
                       {day}

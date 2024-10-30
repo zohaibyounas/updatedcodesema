@@ -235,7 +235,7 @@ export default function HomePage() {
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm sm:text-lg"
                 >
-                  Logout
+                  Abmelden
                 </button>
               </>
             )}
@@ -254,7 +254,7 @@ export default function HomePage() {
             className="text-black bg-white border-none cursor-pointer"
             onChange={(e) => handleScrollTo(e.target.value)}
           >
-            <option value="">Where to Go?</option>
+            <option value="">Wohin gehen?</option>
             <option value="Home">Home</option>
             <option value="Über">Über</option>
             <option value="Kurse">Warum uns wählen</option>
@@ -278,7 +278,7 @@ export default function HomePage() {
               onClick={handleLogout}
               className="absolute right-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 text-sm rounded-lg"
             >
-              Logout
+              Abmelden
             </button>
           )}
         </div>
@@ -286,18 +286,18 @@ export default function HomePage() {
 
       {/* Text box */}
       <div className="absolute left-1/2 top-[15%] md:top-[40%] lg:top-1/2 w-full -translate-x-1/2 md:-translate-y-1/2 text-center text-white px-4">
-        <span className="mb-8 block text-2xl md:text-3xl font-bold text-stone-100 max-w-3xl md:max-w-6xl lg:max-w-[90rem] mx-auto">
+        {/* <span className="mb-8 block text-2xl md:text-3xl font-bold text-stone-100 max-w-3xl md:max-w-6xl lg:max-w-[90rem] mx-auto">
           Dieser Augenblick des inneren Friedens, wenn man den Kopf verlässt und
           endlich ganz im Körper ankommt.
-        </span>
+        </span> */}
         <h1 className="mb-12 text-4xl md:text-5xl font-semibold tracking-tighter">
           Transformiere dich
         </h1>
         <button
           className="duration-400 cursor-pointer border-2 border-white bg-transparent px-8 py-2 text-lg sm:px-12 sm:py-3 sm:text-xl text-white shadow-lg transition-all hover:bg-stone-400 hover:text-white"
-          onClick={() => router.push("/courses")}
+          onClick={() => handleScrollTo("Kontakt")}
         >
-          buche jetzt deine Class
+          Kontaktieren Sie uns
         </button>
       </div>
 

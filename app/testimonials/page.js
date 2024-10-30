@@ -41,7 +41,7 @@ function Testimonials() {
               <h3 className="mb-2 text-xl text-black">
                 {userReviews[currentClient].name}
               </h3>
-              <span>Profession</span>
+              <span>Beruf</span>
             </div>
           </div>
           <p className="mb-6 border border-white bg-stone-300 p-4 text-lg leading-6 text-black max-h-[15rem] overflow-y-auto">
@@ -61,9 +61,9 @@ function Testimonials() {
         </div>
         <div className="flex w-full flex-col justify-center bg-gradient-to-r from-stone-100 to-stone-200 p-8 md:h-auto md:w-1/2">
           <div className="w-full md:w-3/4">
-            <h3 className="mb-2 text-xl text-black">Testimonial</h3>
+            <h3 className="mb-2 text-xl text-black">Zeugnis</h3>
             <span className="mb-3 block text-2xl font-bold text-black md:text-4xl">
-              What Our Clients Say?
+              Was unsere Kunden sagen?
             </span>
             <p className="text-lg leading-6 text-black md:text-xl">
               {userReviews[currentClient].description}

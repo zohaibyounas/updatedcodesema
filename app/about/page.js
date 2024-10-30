@@ -43,7 +43,7 @@ export default function AboutUs() {
             meinen Routinen gehörten, kamen nicht mehr infrage.
           </p>
           <Link className="bg-gray-200 text-black p-1" href="/aboutUs">
-            Read more
+            Mehr lesen
           </Link>
         </div>
 
@@ -62,7 +62,7 @@ export default function AboutUs() {
             Beispiel den Übergang von einer Übung zur nächsten...
           </p>
           <Link className="bg-gray-200 text-black p-1" href="/aboutUs">
-            Read more
+            Mehr lesen
           </Link>
         </div>
       </div>

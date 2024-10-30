@@ -259,7 +259,7 @@ export default function Courses() {
         {classDetails.map((cls) => (
           <div
             key={cls.id}
-            className="flex-1 rounded-lg p-8 md:p-16 2xl:p-20 border border-black bg-gray-100 shadow-lg"
+            className="flex-1 rounded-lg p-8 md:p-16 2xl:p-20 border border-gray-100 bg-gray-100 shadow-xl shadow-gray-300"
           >
             <h1 className="mb-4 text-2xl md:text-3xl font-semibold tracking-wide text-black lg:text-4xl">
               {cls.title}

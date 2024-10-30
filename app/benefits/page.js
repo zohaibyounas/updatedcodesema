@@ -8,7 +8,7 @@ export default function Benefits() {
         Warum Online-Training über Zoom mit mir?
       </h3>
       <h1 className="mb-16 text-center text-4xl font-bold text-black sm:text-5xl lg:text-7xl">
-        Deine Benefits
+        Deine Vorteile
       </h1>
 
       <div className="grid w-11/12 grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-3">
