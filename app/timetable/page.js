@@ -177,12 +177,10 @@ export default function TimeTable() {
           className={`w-full ${selectedDay && !isDeleting ? "blur-sm" : ""}`}
         >
           <div className="overflow-x-auto">
-            {" "}
-            {/* Added overflow for small screens */}
             <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
               <thead className="bg-stone-300 text-black">
                 <tr>
-                  <th className="p-3">Uhrzeit</th>
+                  <th className="p-2 md:p-3">Uhrzeit</th>
                   {[
                     "Montag",
                     "Dienstag",
@@ -192,7 +190,7 @@ export default function TimeTable() {
                     "Samstag",
                     "Sonntag",
                   ].map((day) => (
-                    <th key={day} className="p-3">
+                    <th key={day} className="p-2 md:p-3">
                       {day}
                     </th>
                   ))}
@@ -221,17 +219,19 @@ export default function TimeTable() {
                               (course, i) => (
                                 <div
                                   key={i}
-                                  className="text-black flex flex-col h-full justify-between mt-7"
+                                  className="text-black flex flex-col h-full justify-between mt-2" // Adjusted margin here
                                 >
-                                  <div className="text-xs md:text-2xl ">
+                                  <div className="text-xs md:text-lg pt-12 lg:pt-24">
+                                    {" "}
+                                    {/* Reduced font size */}
                                     {course.course_title}
                                   </div>
-                                  <div className="flex items-center justify-center text-xs md:text-xl mb-1 mt-1 ">
+                                  <div className="flex items-center justify-center text-xs md:text-base mb-1 mt-1 ">
                                     {course.course_duration}
                                   </div>
                                   {!isAdmin && (
                                     <button
-                                      className="mt-auto bg-teal-400 text-white px-2 py-0.5 font-semibold md:px-6 md:py-2 rounded text-xs md:text-xl mb-6"
+                                      className="mt-auto bg-teal-400 text-white px-2 py-0.5 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
                                       onClick={() => {
                                         document
                                           .getElementById("Kontakt")
@@ -255,7 +255,7 @@ export default function TimeTable() {
                                         courses[day.format("YYYY-MM-DD")][0]
                                       )
                                     }
-                                    className="bg-green-500 text-white px-2 py-0.5 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
+                                    className="bg-green-500 text-white px-2 py-0.5 rounded text-xs lg:py-2 lg:px-6 lg:text-lg"
                                   >
                                     Edit
                                   </button>
@@ -265,7 +265,7 @@ export default function TimeTable() {
                                         courses[day.format("YYYY-MM-DD")][0]
                                       )
                                     }
-                                    className="bg-red-500 text-white px-2 py-1 rounded text-xs lg:py-2 lg:px-6 lg:text-2xl"
+                                    className="bg-red-500 text-white px-2 py-1 rounded text-xs lg:py-2 lg:px-6 lg:text-lg"
                                   >
                                     Delete
                                   </button>
