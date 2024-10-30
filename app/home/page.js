@@ -1,23 +1,21 @@
 "use client";
+import { createClient } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import ContectUs from "../_components/ContectUs";
 import Logo from "../_components/Logo";
 import Navbar from "../_components/Navbar";
 import AboutUs from "../about/page";
 import Benefits from "../benefits/page";
+import { useUser } from "../context/UserContex"; // Using the user context
 import Courses from "../courses/page";
 import Footer from "../footer/page";
-import { createClient } from "@supabase/supabase-js";
 import Testimonials from "../testimonials/page";
-import ContectUs from "../_components/ContectUs";
 import TimeTable from "../timetable/page";
-import Link from "next/link";
-import { useUser } from "../context/UserContex"; // Using the user context
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
+const supabaseKey = "YOUR_SUPABASE_KEY"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const images = [
@@ -35,7 +33,8 @@ const navItemsRight = ["Vorteile", "Kalender"];
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const counter = useRef(0);
+  const counter = useRef(0); // Keeps track of the index for automatic sliding
+  const intervalId = useRef(null); // Keeps track of the interval ID
   const { user, isAdmin, setUser, setIsAdmin } = useUser(); // Get user and admin status from context
   const router = useRouter();
 
@@ -53,13 +52,23 @@ export default function HomePage() {
     }
 
     setIsMounted(true);
+    startAutoSlide();
 
-    const intervalId = setInterval(() => {
+    return () => stopAutoSlide(); // Clear interval on component unmount
+  }, [setIsAdmin, setUser]);
+
+  const startAutoSlide = () => {
+    stopAutoSlide(); // Clear any existing interval
+    intervalId.current = setInterval(() => {
       slideToNextImage();
     }, 4000);
+  };
 
-    return () => clearInterval(intervalId);
-  }, []);
+  const stopAutoSlide = () => {
+    if (intervalId.current) {
+      clearInterval(intervalId.current);
+    }
+  };
 
   const slideToPreviousImage = () => {
     counter.current =
@@ -71,6 +80,12 @@ export default function HomePage() {
     counter.current =
       counter.current >= images.length - 1 ? 0 : counter.current + 1;
     setCurrentImageIndex(counter.current);
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentImageIndex(index);
+    counter.current = index; // Sync the counter with the selected image
+    startAutoSlide(); // Restart auto slide to ensure consistent behavior
   };
 
   const handleLogout = async () => {
@@ -106,31 +121,92 @@ export default function HomePage() {
   if (!isMounted) return null; // Return null if the component is not mounted yet
 
   return (
-    <div id="Home">
-      <div className="relative h-full overflow-hidden overflow-x-hidden ">
-        <Image
-          src={images[currentImageIndex]}
-          width={1000}
-          height={500}
-          quality={100}
-          alt="Lady telling about fitness"
-          className="duration-500 ease-in-out transform w-full h-[35rem] md:h-full object-center transition-transform object-cover"
-          style={{ transition: "transform 1s ease-in-out" }}
-        />
-
-        {/* Navigation Arrows */}
+    <div id="Home" className="overflow-hidden">
+      {/* Carousel */}
+      <div
+        id="default-carousel"
+        className="relative w-full"
+        data-carousel="slide"
+      >
         <div
-          className="absolute top-1/2 left-0 transform -translate-y-1/2 p-2 cursor-pointer z-10 hidden lg:block"
+          className="flex transition-transform duration-1000 ease-in-out"
+          style={{ transform: `translateX(-${currentImageIndex * 100}%)` }}
+        >
+          {images.map((src, index) => (
+            <div key={index} className="flex-shrink-0 w-full">
+              <Image
+                src={src}
+                width={1000}
+                height={500}
+                quality={100}
+                alt={`Slide ${index + 1}`}
+                className="w-full h-[35rem] md:h-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+        {/* Slider indicators */}
+        <div className="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3">
+          {images.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`w-3 h-3 rounded-full ${
+                index === currentImageIndex ? "bg-white" : "bg-gray-500"
+              }`}
+              aria-current={index === currentImageIndex}
+              aria-label={`Slide ${index + 1}`}
+              onClick={() => handleDotClick(index)}
+            ></button>
+          ))}
+        </div>
+        {/* Slider controls */}
+        <button
+          type="button"
+          className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group"
           onClick={slideToPreviousImage}
         >
-          <Image src="/left.png" alt="Previous" width={50} height={50} />
-        </div>
-        <div
-          className="absolute top-1/2 right-0 transform -translate-y-1/2 p-2 cursor-pointer z-10 hidden lg:block"
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50">
+            <svg
+              className="w-4 h-4 text-white"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 1 1 5l4 4"
+              />
+            </svg>
+            <span className="sr-only">Previous</span>
+          </span>
+        </button>
+        <button
+          type="button"
+          className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group"
           onClick={slideToNextImage}
         >
-          <Image src="/right.png" alt="Next" width={50} height={50} />
-        </div>
+          <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50">
+            <svg
+              className="w-4 h-4 text-white"
+              aria-hidden="true"
+              fill="none"
+              viewBox="0 0 6 10"
+            >
+              <path
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M1 9l4-4-4-4"
+              />
+            </svg>
+            <span className="sr-only">Next</span>
+          </span>
+        </button>
       </div>
 
       {/* Header with navigation */}
@@ -152,11 +228,9 @@ export default function HomePage() {
           <div className="flex gap-4 items-center">
             {user && isAdmin && (
               <>
-                {/* Show email on large screens */}
                 <span className="lg:block hidden text-xl font-bold mr-6">
                   {user.email}
                 </span>
-                {/* Logout button visible on all screen sizes */}
                 <button
                   onClick={handleLogout}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg text-sm sm:text-lg"

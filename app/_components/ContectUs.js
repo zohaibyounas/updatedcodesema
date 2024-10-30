@@ -41,9 +41,16 @@ export default function Contact() {
             color: "#fff",
           },
         });
+        setFormData({
+          name: "",
+          email: "",
+          subject: "",
+          message: "",
+          option: "",
+        });
         setTimeout(() => {
           router.push("/"); // Redirect after a short delay
-        }, 3000);
+        }, 1000);
       } else {
         const errorData = await response.json();
         toast.error(`There was an error: ${errorData.message}`, {
