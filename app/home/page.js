@@ -19,7 +19,7 @@ const supabaseKey = "YOUR_SUPABASE_KEY"; // Replace with your Supabase key
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const images = [
-  "/hero-1.jpeg",
+  //"/hero-1.jpeg",
   "/hero-2.jpeg",
   "/hero-3.jpeg",
   "/hero-4.jpeg",
