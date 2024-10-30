@@ -151,7 +151,7 @@ export default function HomePage() {
             <button
               key={index}
               type="button"
-              className={`w-3 h-3 rounded-full ${
+              className={`w-3 h-3 rounded-full object-cover ${
                 index === currentImageIndex ? "bg-white" : "bg-gray-500"
               }`}
               aria-current={index === currentImageIndex}
@@ -160,10 +160,10 @@ export default function HomePage() {
             ></button>
           ))}
         </div>
-        {/* Slider controls */}
+        {/* Slider controls - hidden on small screens */}
         <button
           type="button"
-          className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group"
+          className="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group hidden md:block"
           onClick={slideToPreviousImage}
         >
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50">
@@ -186,7 +186,7 @@ export default function HomePage() {
         </button>
         <button
           type="button"
-          className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group"
+          className="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group hidden md:block"
           onClick={slideToNextImage}
         >
           <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50">
@@ -210,7 +210,7 @@ export default function HomePage() {
       </div>
 
       {/* Header with navigation */}
-      <div className="fixed top-0 z-50 left-0 w-full shadow-lg bg-white ">
+      <div className="fixed top-0 z-50 left-0 w-full shadow-lg bg-white">
         {/* Large screen navigation */}
         <div className="hidden bg-white px-4 py-2 md:flex md:items-center md:justify-between">
           <div className="flex-1">
