@@ -10,7 +10,7 @@ import { useUser } from "../context/UserContex";
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU"; // Replace with your Supabase key
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function TimeTable() {
@@ -231,7 +231,7 @@ export default function TimeTable() {
                                   </div>
                                   {!isAdmin && (
                                     <button
-                                      className="mt-auto bg-teal-400 text-white px-2 py-0.5 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
+                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
                                       onClick={() => {
                                         document
                                           .getElementById("Kontakt")
@@ -240,7 +240,7 @@ export default function TimeTable() {
                                           });
                                       }}
                                     >
-                                      Register
+                                      Registrieren
                                     </button>
                                   )}
                                 </div>

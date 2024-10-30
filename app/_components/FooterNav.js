@@ -25,7 +25,7 @@ function FooterNav() {
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span>Courses</span>
+        <span>Kurse</span>
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
@@ -34,7 +34,7 @@ function FooterNav() {
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span>About Us</span>
+        <span>Über uns</span>
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
@@ -43,7 +43,7 @@ function FooterNav() {
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span>Calendar</span>
+        <span>Kalender</span>
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
@@ -76,7 +76,7 @@ function FooterNav() {
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <Link href="/contact">Contact Us</Link>
+        <Link href="/contact">Kontaktieren Sie uns</Link>
       </div>
     </>
   );

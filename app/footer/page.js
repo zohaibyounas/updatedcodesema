@@ -24,18 +24,18 @@ function Footer() {
       {/* Footer Content */}
       <div className="grid grid-cols-1 gap-10 p-10 sm:grid-cols-2 sm:gap-24 sm:p-24 lg:grid-cols-3">
         <div>
-          <h1 className="mb-4 text-2xl text-black">Quick Links</h1>
+          <h1 className="mb-4 text-2xl text-black">Schnellzugriffe</h1>
           <FooterNav />
         </div>
 
         <div>
-          <h1 className="mb-4 text-2xl text-black">Opening Hours</h1>
+          <h1 className="mb-4 text-2xl text-black">Öffnungszeiten</h1>
           <div className="mb-4 flex flex-col text-xl text-black">
-            <strong className="mb-2">Monday - Friday</strong>
+            <strong className="mb-2">Montag - Freitag</strong>
             <time>8.00 AM - 8.00 PM</time>
           </div>
           <div className="mb-4 flex flex-col text-xl text-black">
-            <strong className="mb-2">Saturday - Sunday</strong>
+            <strong className="mb-2">Samstag - Sonntag</strong>
             <time>2.00 PM - 8.00 PM</time>
           </div>
         </div>
