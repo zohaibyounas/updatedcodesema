@@ -1,23 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { userReviews } from "../_data/userReviews";
 import Image from "next/image";
 
 function Testimonials() {
   const [currentClient, setCurrentClient] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentClient((prevClient) =>
-        prevClient >= userReviews.length - 1 ? 0 : prevClient + 1
-      );
-    }, 3000);
-
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
 
   function handleSliderClick(index) {
     setCurrentClient(index);
@@ -60,7 +48,7 @@ function Testimonials() {
           </div>
         </div>
         <div className="flex w-full flex-col justify-center bg-gradient-to-r from-stone-100 to-stone-200 p-8 md:h-auto md:w-1/2">
-          <div className="w-full md:w-3/4">
+          {/* <div className="w-full md:w-3/4">
             <h3 className="mb-2 text-xl text-black">Zeugnis</h3>
             <span className="mb-3 block text-2xl font-bold text-black md:text-4xl">
               Was unsere Kunden sagen?
@@ -68,7 +56,7 @@ function Testimonials() {
             <p className="text-lg leading-6 text-black md:text-xl">
               {userReviews[currentClient].description}
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

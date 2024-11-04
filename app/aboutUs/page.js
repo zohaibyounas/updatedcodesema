@@ -8,7 +8,6 @@ import Logo from "../_components/Logo";
 export default function Page() {
   const router = useRouter();
 
-  // Define navigation items with paths
   const navItemsLeft = [
     { name: "Home", path: "/" },
     { name: "Über", path: "/about" },

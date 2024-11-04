@@ -152,6 +152,11 @@ export default function TimeTable() {
     setEditingCourse(null);
   };
 
+  // Helper function to format time to HH:mm (removes extra :00 if present)
+  const formatTime = (time) => {
+    return time.includes(":00") ? time.slice(0, -3) : time;
+  };
+
   return (
     <div className="py-12 -mt-20 sm:-mt-0 lg:-mt-0" id="Kalender">
       <div className="relative mx-auto flex flex-col items-center justify-center w-full overflow-x-hidden text-center min-h-[75vh]">
@@ -227,7 +232,7 @@ export default function TimeTable() {
                                     {course.course_title}
                                   </div>
                                   <div className="flex items-center justify-center text-xs md:text-base mb-1 mt-1 ">
-                                    {course.course_duration}
+                                    {formatTime(course.course_duration)}
                                   </div>
                                   {!isAdmin && (
                                     <button

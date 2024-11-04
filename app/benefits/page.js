@@ -4,11 +4,11 @@ export default function Benefits() {
       className="mx-auto flex min-h-screen w-full flex-col items-center justify-center py-32  bg-white"
       id="Vorteile"
     >
-      <h3 className="mb-6 text-center text-3xl text-black sm:text-4xl">
+      {/* <h3 className="mb-6 text-center text-3xl text-black sm:text-4xl">
         Warum Online-Training über Zoom mit mir?
-      </h3>
+      </h3> */}
       <h1 className="mb-16 text-center text-4xl font-bold text-black sm:text-5xl lg:text-7xl">
-        Deine Vorteile
+        Deine Warum
       </h1>
 
       <div className="grid w-11/12 grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-3">
@@ -41,16 +41,17 @@ export default function Benefits() {
 
         <div className="bg-gray-100 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
           <div className="text-7xl text-teal-500 mb-4">
-            <ion-icon name="happy-outline"></ion-icon>
+            <ion-icon name="people-outline"></ion-icon> {/* Updated icon */}
           </div>
           <h3 className="mb-4 text-2xl font-bold text-black sm:text-3xl lg:text-4xl text-center">
-            Vielfalt und Spaß
+            Vielfalt
           </h3>
           <p className="text-base text-black sm:text-lg lg:text-2xl text-center">
-            Keine Routine ist wie die andere! Ich mixe Elemente aus Fitness und
-            klassischem Pilates, sodass jeder Kurs neu und dynamisch bleibt.
-            Wenn du neugierig geworden bist oder einfach mal reinschnuppern
-            willst, kontaktiere mich gerne!
+            Für alle, die bisher wenig Begeisterung für Sport hatten: Ich zeige
+            dir, dass auch Muskelaufbau und Bewegung richtig Spaß machen können
+            – und irgendwann sogar zur Motivation werden. Du kannst mich nicht
+            einfach auf Pause legen. Sobald du die ersten Erfolge siehst, wird
+            es erst richtig spannend!
           </p>
         </div>
       </div>

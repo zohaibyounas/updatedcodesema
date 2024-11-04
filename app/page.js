@@ -1,19 +1,29 @@
 "use client";
+
 import { UserProvider } from "./context/UserContex"; // Adjust the import path as necessary
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import HomePage from "./home/page";
-// import supabase from "./_database/Supabase";
 import { createClient } from "@supabase/supabase-js";
+import { Poppins } from "next/font/google";
+
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU";
 const supabase = createClient(supabaseUrl, supabaseKey);
-// export default supabase;
+
+// Import Poppins font from Google Fonts using next/font
+const poppins = Poppins({
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // Define weights as needed
+  subsets: ["latin"],
+});
+
 function MyApp({ Component, pageProps }) {
   return (
     <UserProvider>
-      <Component {...pageProps} />
+      <main className={poppins.className}>
+        <Component {...pageProps} />
+      </main>
     </UserProvider>
   );
 }
@@ -38,7 +48,6 @@ function PaymentHandler() {
     async function getSessionId() {
       const session_id = searchParams.get("session_id");
       if (session_id && !sessionData) {
-        // Ensure the request is only made once
         try {
           const response = await fetch(
             `/api/retrievePayment?session_id=${session_id}`
@@ -48,37 +57,30 @@ function PaymentHandler() {
           const paymentIntent = await response.json();
           const { customer_details } = paymentIntent;
 
-          // Retrieve stored course details
           const course = JSON.parse(localStorage.getItem("course"));
-
-          // Combine course details with customer details
           const purchaseDetails = {
             ...course,
             customerEmail: customer_details.email,
             customerName: customer_details.name,
           };
 
-          // Store the combined details (you can later send it to a server or email)
           localStorage.setItem(
             "purchaseDetails",
             JSON.stringify(purchaseDetails)
           );
 
-          // Send an email to the customer
           const emailResponse = await fetch("/api/sendEmail", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(purchaseDetails),
           });
 
-          // Optionally, send purchase details to your server
           const purchaseResponse = await fetch("/api/purchase", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(purchaseDetails),
           });
 
-          // Only set session data once everything is complete to avoid re-triggers
           if (emailResponse.ok && purchaseResponse.ok) {
             setSessionData(purchaseDetails);
           }
@@ -94,7 +96,7 @@ function PaymentHandler() {
   return <HomePage />;
 }
 
-export default function WrappedPaymentHandler() {
+function WrappedPaymentHandler() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -102,4 +104,15 @@ export default function WrappedPaymentHandler() {
   }, []);
 
   return mounted ? <PaymentHandler /> : <div>Loading...</div>;
+}
+
+// The main app component with the Poppins font applied globally
+export default function WrappedApp() {
+  return (
+    <UserProvider>
+      <main className={poppins.className}>
+        <WrappedPaymentHandler />
+      </main>
+    </UserProvider>
+  );
 }

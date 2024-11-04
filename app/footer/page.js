@@ -28,7 +28,7 @@ function Footer() {
           <FooterNav />
         </div>
 
-        <div>
+        {/* <div>
           <h1 className="mb-4 text-2xl text-black">Öffnungszeiten</h1>
           <div className="mb-4 flex flex-col text-xl text-black">
             <strong className="mb-2">Montag - Freitag</strong>
@@ -38,7 +38,7 @@ function Footer() {
             <strong className="mb-2">Samstag - Sonntag</strong>
             <time>2.00 PM - 8.00 PM</time>
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="mt-8 text-center text-black">

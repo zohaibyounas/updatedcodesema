@@ -20,32 +20,32 @@ function FooterNav() {
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
+        onClick={() => handleScrollTo("Vorteile")}
+      >
+        <span>
+          <ion-icon name="caret-forward-outline"></ion-icon>
+        </span>
+        <span> Dein Warum</span>
+      </div>
+      <div
+        className="flex gap-3 text-xl text-black cursor-pointer"
         onClick={() => handleScrollTo("Kurse")}
       >
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span>Kurse</span>
+        <span> Kurse</span>
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
-        onClick={() => handleScrollTo("Über")}
+        onClick={() => handleScrollTo("Kontakt")}
       >
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span>Über uns</span>
+        <span>Kontakt</span>
       </div>
-      <div
-        className="flex gap-3 text-xl text-black cursor-pointer"
-        onClick={() => handleScrollTo("Kalender")}
-      >
-        <span>
-          <ion-icon name="caret-forward-outline"></ion-icon>
-        </span>
-        <span>Kalender</span>
-      </div>
-      <div
+      {/* <div
         className="flex gap-3 text-xl text-black cursor-pointer"
         onClick={() => router.push("/agb")}
       >
@@ -53,17 +53,17 @@ function FooterNav() {
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
         <span>AGB</span>
-      </div>
+      </div> */}
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
-        onClick={() => router.push("/dataProtection")}
+        onClick={() => handleScrollTo("Kalender")}
       >
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span>Datenschutz</span>
+        <span> Kalender</span>
       </div>
-      <div
+      {/* <div
         className="flex gap-3 text-xl text-black cursor-pointer"
         onClick={() => router.push("/cancellationPolicy")}
       >
@@ -71,13 +71,13 @@ function FooterNav() {
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
         <span>Widerrufsbelehrung</span>
-      </div>
-      <div className="flex gap-3 text-xl text-black cursor-pointer">
+      </div> */}
+      {/* <div className="flex gap-3 text-xl text-black cursor-pointer">
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
         <Link href="/contact">Kontaktieren Sie uns</Link>
-      </div>
+      </div> */}
     </>
   );
 }
