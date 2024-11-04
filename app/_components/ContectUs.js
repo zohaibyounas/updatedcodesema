@@ -89,7 +89,7 @@ export default function Contact() {
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-6">
           Kontakt
         </h1>
-        <p className="text-lg sm:text-xl lg:text-2xl mb-8">
+        <p className="text-lg sm:text-lg lg:text-2xl leading-relaxed">
           Ich freue mich über deine Nachricht! Bitte fülle das folgende Formular
           aus, um mit mir in Kontakt zu treten. Ich werde mich so schnell wie
           möglich bei dir melden.
