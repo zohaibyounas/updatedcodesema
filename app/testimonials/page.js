@@ -3,16 +3,40 @@
 import { useState } from "react";
 import { userReviews } from "../_data/userReviews";
 import Image from "next/image";
+import { useSwipeable } from "react-swipeable";
 
 function Testimonials() {
   const [currentClient, setCurrentClient] = useState(0);
+
+  // Handler for changing reviews based on swipe direction
+  const handleSwipe = (direction) => {
+    if (direction === "left") {
+      setCurrentClient((prevClient) =>
+        prevClient >= userReviews.length - 1 ? 0 : prevClient + 1
+      );
+    } else if (direction === "right") {
+      setCurrentClient((prevClient) =>
+        prevClient <= 0 ? userReviews.length - 1 : prevClient - 1
+      );
+    }
+  };
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => handleSwipe("left"),
+    onSwipedRight: () => handleSwipe("right"),
+    preventScrollOnSwipe: true,
+    trackMouse: true, // Allows swipe functionality on desktop with mouse dragging
+  });
 
   function handleSliderClick(index) {
     setCurrentClient(index);
   }
 
   return (
-    <div className="my-1 bg-stone-300 py-8 md:my-32 md:py-16">
+    <div
+      className="my-1 bg-stone-300 py-8 md:my-32 md:py-16"
+      {...swipeHandlers}
+    >
       <div className="flex flex-col-reverse gap-8 md:flex-row">
         <div className="flex flex-col justify-center p-8 md:w-1/2">
           <div className="mb-6 flex items-center gap-4">
