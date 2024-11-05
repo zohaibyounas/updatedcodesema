@@ -382,7 +382,7 @@ export default function HomePage() {
               </li>
               {!user && (
                 <li>
-                  <button
+                  {/* <button
                     onClick={() => {
                       setSelectedMenuItem("Kontakt");
                       handleScrollTo("Kontakt");
@@ -394,7 +394,7 @@ export default function HomePage() {
                     }`}
                   >
                     Kontakt
-                  </button>
+                  </button> */}
                 </li>
               )}
             </ul>
