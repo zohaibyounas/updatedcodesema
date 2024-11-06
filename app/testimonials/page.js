@@ -8,7 +8,6 @@ import { useSwipeable } from "react-swipeable";
 function Testimonials() {
   const [currentClient, setCurrentClient] = useState(0);
 
-  // Handler for changing reviews based on swipe direction
   const handleSwipe = (direction) => {
     if (direction === "left") {
       setCurrentClient((prevClient) =>
@@ -25,7 +24,7 @@ function Testimonials() {
     onSwipedLeft: () => handleSwipe("left"),
     onSwipedRight: () => handleSwipe("right"),
     preventScrollOnSwipe: true,
-    trackMouse: true, // Allows swipe functionality on desktop with mouse dragging
+    trackMouse: true,
   });
 
   function handleSliderClick(index) {
@@ -34,29 +33,29 @@ function Testimonials() {
 
   return (
     <div
-      className="my-1 bg-stone-300 py-8 md:my-32 md:py-16"
+      className="my-1 bg-stone-300 lg:bg-slate-50 py-8 md:my-32 md:py-16 w-full  lg:flex lg:justify-center"
       {...swipeHandlers}
     >
-      <div className="flex flex-col-reverse gap-8 md:flex-row">
-        <div className="flex flex-col justify-center p-8 md:w-1/2">
+      <div className="flex flex-col-reverse gap-8 md:flex-row w-full lg:max-w-4xl lg:w-full p-4">
+        <div className="flex flex-col justify-center p-8 w-full">
           <div className="mb-6 flex items-center gap-4">
-            <div className="h-16 w-16">
+            <div className="h-16 w-16 lg:h-20 lg:w-20">
               <Image
                 src={userReviews[currentClient].picture}
                 alt="client"
-                width={64}
-                height={64}
+                width={80}
+                height={80}
                 className="h-full w-full rounded-full object-cover"
               />
             </div>
-            <div className="text-lg text-black">
-              <h3 className="mb-2 text-xl text-black">
+            <div className="text-lg text-black lg:text-2xl">
+              <h3 className="mb-2 text-xl lg:text-3xl font-semibold text-black">
                 {userReviews[currentClient].name}
               </h3>
-              <span>Beruf</span>
+              <span className="text-gray-700">Erfahrungsberichte</span>
             </div>
           </div>
-          <p className="mb-6 border border-white bg-stone-300 p-4 text-lg leading-6 text-black max-h-[15rem] overflow-y-auto">
+          <p className="mb-6 border border-white bg-stone-300 p-4 text-lg lg:text-2xl leading-6 text-black">
             {userReviews[currentClient].description}
           </p>
           <div className="relative flex w-full items-center justify-center gap-1.5">
@@ -70,17 +69,6 @@ function Testimonials() {
               />
             ))}
           </div>
-        </div>
-        <div className="flex w-full flex-col justify-center bg-gradient-to-r from-stone-100 to-stone-200 p-8 md:h-auto md:w-1/2">
-          {/* <div className="w-full md:w-3/4">
-            <h3 className="mb-2 text-xl text-black">Zeugnis</h3>
-            <span className="mb-3 block text-2xl font-bold text-black md:text-4xl">
-              Was unsere Kunden sagen?
-            </span>
-            <p className="text-lg leading-6 text-black md:text-xl">
-              {userReviews[currentClient].description}
-            </p>
-          </div> */}
         </div>
       </div>
     </div>
