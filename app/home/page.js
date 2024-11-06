@@ -23,7 +23,8 @@ const images = [
   "/hero-2.jpeg",
   "/hero-3.jpeg",
   "/hero-4.jpeg",
-  "/hero-5.jpeg",
+  //"/hero-5.jpeg",
+  "/hero-9.jpg",
   "/hero-6.jpeg",
 ];
 
