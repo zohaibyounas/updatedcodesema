@@ -10,12 +10,11 @@ const classDetails = [
   {
     id: 2,
     title: "Rotierende Kurse – Dein Pilates, wie du es brauchst",
-    description: `
-      <b>🌶 Pilates HIIT</b> – Hier kommt deine Ausdauer auf Touren! Im Pilates HIIT verbinde ich schnelles Tempo mit gezielten Bewegungsabfolgen. Perfekt, um deine Koordination und deine Kondition auf das nächste Level zu bringen.<br /><br />
-      <b>🌶 Pilates Mobility</b> – Deine Wirbelsäule und Beweglichkeit stehen im Fokus. Diese Stunde widmet sich der funktionellen Mobilität, damit du dich im Alltag freier und geschmeidiger bewegen kannst.<br /><br />
-      <b>🌶 Pilates Strength</b> – Wir trainieren die größeren Muskelgruppen und bauen gezielt Kraft auf. Ein perfekter Mix für mehr Stabilität und Stärke.<br /><br />
-      <b>🌶 Pilates Burn</b> – Der Name sagt es: Ein Ganzkörper-Burn! In dieser Stunde fokussieren wir uns oft auf spezielle Körperbereiche für ein intensives Trainingserlebnis.
-    `,
+    description:
+      "🌶 <strong>Pilates HIIT</strong> – Hier kommt deine Ausdauer auf Touren! Im Pilates HIIT verbinde ich schnelles Tempo mit gezielten Bewegungsabfolgen. Perfekt, um deine Koordination und deine Kondition auf das nächste Level zu bringen.\n\n" +
+      "🌶 <strong>Pilates Mobility</strong> – Deine Wirbelsäule und Beweglichkeit stehen im Fokus. Diese Stunde widmet sich der funktionellen Mobilität, damit du dich im Alltag freier und geschmeidiger bewegen kannst.\n\n" +
+      "🌶 <strong>Pilates Strength</strong> – Wir trainieren die größeren Muskelgruppen und bauen gezielt Kraft auf. Ein perfekter Mix für mehr Stabilität und Stärke.\n\n" +
+      "🌶 <strong>Pilates Burn</strong> – Der Name sagt es: Ein Ganzkörper-Burn! In dieser Stunde fokussieren wir uns oft auf spezielle Körperbereiche für ein intensives Trainingserlebnis.",
   },
 ];
 

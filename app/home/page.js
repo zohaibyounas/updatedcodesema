@@ -323,21 +323,6 @@ export default function HomePage() {
               <li>
                 <button
                   onClick={() => {
-                    setSelectedMenuItem("Vorteile");
-                    handleScrollTo("Vorteile");
-                  }}
-                  className={`text-black w-full text-left px-4 py-2 rounded-md ${
-                    selectedMenuItem === "Vorteile"
-                      ? "bg-gray-200"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  Dein Warum
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => {
                     setSelectedMenuItem("Kurse");
                     handleScrollTo("Kurse");
                   }}
@@ -351,6 +336,36 @@ export default function HomePage() {
                 </button>
               </li>
               <li>
+                <li>
+                  <button
+                    onClick={() => {
+                      setSelectedMenuItem("Vorteile");
+                      handleScrollTo("Vorteile");
+                    }}
+                    className={`text-black w-full text-left px-4 py-2 rounded-md ${
+                      selectedMenuItem === "Vorteile"
+                        ? "bg-gray-200"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    Dein Warum
+                  </button>
+                </li>
+                <li>
+                  <button
+                    onClick={() => {
+                      setSelectedMenuItem("Kalender");
+                      handleScrollTo("Kalender");
+                    }}
+                    className={`text-black w-full text-left px-4 py-2 rounded-md ${
+                      selectedMenuItem === "Kalender"
+                        ? "bg-gray-200"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    Kalender
+                  </button>
+                </li>
                 <button
                   onClick={() => {
                     setSelectedMenuItem("Kontakt");
@@ -365,21 +380,7 @@ export default function HomePage() {
                   Kontakt
                 </button>
               </li>
-              <li>
-                <button
-                  onClick={() => {
-                    setSelectedMenuItem("Kalender");
-                    handleScrollTo("Kalender");
-                  }}
-                  className={`text-black w-full text-left px-4 py-2 rounded-md ${
-                    selectedMenuItem === "Kalender"
-                      ? "bg-gray-200"
-                      : "hover:bg-gray-100"
-                  }`}
-                >
-                  Kalender
-                </button>
-              </li>
+
               {!user && (
                 <li>
                   {/* <button

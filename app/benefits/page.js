@@ -23,7 +23,7 @@ export default function Benefits() {
         Dein Warum
       </h1>
 
-      <div className="grid w-11/12 grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-3">
+      <div className="grid w-11/12 grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-4">
         <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
           <div className="text-7xl text-teal-500 mb-4">
             <ion-icon name="barbell-outline"></ion-icon>
@@ -77,13 +77,42 @@ export default function Benefits() {
 
         <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
           <div className="text-7xl text-teal-500 mb-4">
-            <ion-icon name="people-outline"></ion-icon>
+            <ion-icon name="sparkles-outline"></ion-icon>{" "}
+            {/* New attractive icon */}
           </div>
           <h3
             className="mb-4 text-2xl font-bold sm:text-3xl lg:text-4xl text-center"
             style={{ color: "#1a1a1a" }}
           >
             Vielfalt
+          </h3>
+          <p
+            className="text-lg sm:text-lg lg:text-3xl text-center leading-relaxed"
+            style={{
+              color: "#555555",
+              fontWeight: 300,
+              lineHeight: "1.6",
+              maxWidth: "80%",
+              margin: "0 auto",
+            }}
+          >
+            Für alle, die bisher wenig Begeisterung für Sport hatten: Ich zeige
+            dir, dass auch Muskelaufbau und Bewegung richtig Spaß machen können
+            – und irgendwann sogar zur Motivation werden. Du kannst mich nicht
+            einfach auf Pause legen. Sobald du die ersten Erfolge siehst, wird
+            es erst richtig spannend!
+          </p>
+        </div>
+
+        <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
+          <div className="text-7xl text-teal-500 mb-4">
+            <ion-icon name="happy-outline"></ion-icon>
+          </div>
+          <h3
+            className="mb-4 text-2xl font-bold sm:text-3xl lg:text-4xl text-center"
+            style={{ color: "#1a1a1a" }}
+          >
+            Bewegung, die Spaß macht
           </h3>
           <p
             className="text-lg sm:text-lg lg:text-3xl text-center leading-relaxed"

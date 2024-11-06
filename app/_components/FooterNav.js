@@ -20,6 +20,15 @@ function FooterNav() {
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
+        onClick={() => handleScrollTo("Kurse")}
+      >
+        <span>
+          <ion-icon name="caret-forward-outline"></ion-icon>
+        </span>
+        <span> Kurse</span>
+      </div>
+      <div
+        className="flex gap-3 text-xl text-black cursor-pointer"
         onClick={() => handleScrollTo("Vorteile")}
       >
         <span>
@@ -29,12 +38,12 @@ function FooterNav() {
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
-        onClick={() => handleScrollTo("Kurse")}
+        onClick={() => handleScrollTo("Kalender")}
       >
         <span>
           <ion-icon name="caret-forward-outline"></ion-icon>
         </span>
-        <span> Kurse</span>
+        <span> Kalender</span>
       </div>
       <div
         className="flex gap-3 text-xl text-black cursor-pointer"
@@ -54,15 +63,7 @@ function FooterNav() {
         </span>
         <span>AGB</span>
       </div> */}
-      <div
-        className="flex gap-3 text-xl text-black cursor-pointer"
-        onClick={() => handleScrollTo("Kalender")}
-      >
-        <span>
-          <ion-icon name="caret-forward-outline"></ion-icon>
-        </span>
-        <span> Kalender</span>
-      </div>
+
       {/* <div
         className="flex gap-3 text-xl text-black cursor-pointer"
         onClick={() => router.push("/cancellationPolicy")}
