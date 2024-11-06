@@ -15,15 +15,13 @@ import Testimonials from "../testimonials/page";
 import TimeTable from "../timetable/page";
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
-const supabaseKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind4Z212YXp2dnF5eHpidHBreGxkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mjg0NTM0MTgsImV4cCI6MjA0NDAyOTQxOH0.N-YacRbhIeCwT53qWG1BfCymRCyCtyTBkRetRe5QTBU";
+const supabaseKey = "YOUR_SUPABASE_KEY";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 const images = [
   "/hero-2.jpeg",
   "/hero-3.jpeg",
   "/hero-4.jpeg",
-  //"/hero-5.jpeg",
   "/hero-9.jpg",
   "/hero-6.jpeg",
 ];
@@ -34,12 +32,11 @@ const navItemsRight = ["Vorteile", "Kalender"];
 export default function HomePage() {
   const [isMounted, setIsMounted] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for hamburger menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const counter = useRef(0);
   const intervalId = useRef(null);
   const { user, isAdmin, setUser, setIsAdmin } = useUser();
   const [selectedMenuItem, setSelectedMenuItem] = useState("");
-  const menuRef = useRef(null); // Ref for the dropdown menu
 
   const router = useRouter();
 
@@ -54,18 +51,6 @@ export default function HomePage() {
     startAutoSlide();
     return () => stopAutoSlide();
   }, [setIsAdmin, setUser]);
-
-  useEffect(() => {
-    // Close menu when clicking outside
-    const handleClickOutside = (event) => {
-      if (menuRef.current && !menuRef.current.contains(event.target)) {
-        setIsMenuOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const startAutoSlide = () => {
     stopAutoSlide();
@@ -127,7 +112,6 @@ export default function HomePage() {
 
   return (
     <div id="Home" className="overflow-hidden">
-      {/* Carousel */}
       {/* Carousel */}
       <div
         id="default-carousel"
@@ -269,22 +253,43 @@ export default function HomePage() {
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="focus:outline-none"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="text-black"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h16"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            {isMenuOpen ? (
+              // Display cross icon when menu is open
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-black"
+              >
+                <path
+                  d="M6 18L18 6M6 6l12 12"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            ) : (
+              // Display hamburger icon when menu is closed
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="text-black"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h16"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
           </button>
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <Logo className="h-16" onClick={() => router.push("/")} />
@@ -301,10 +306,7 @@ export default function HomePage() {
 
         {/* Styled Dropdown Menu */}
         {isMenuOpen && (
-          <div
-            ref={menuRef} // Add ref to dropdown menu
-            className="bg-white shadow-lg rounded-lg absolute left-0 w-52 -mt-2 z-40"
-          >
+          <div className="bg-white shadow-lg rounded-lg absolute left-0 w-52 -mt-2 z-40">
             <ul className="flex flex-col p-4 space-y-2">
               <li>
                 <button
@@ -337,36 +339,36 @@ export default function HomePage() {
                 </button>
               </li>
               <li>
-                <li>
-                  <button
-                    onClick={() => {
-                      setSelectedMenuItem("Vorteile");
-                      handleScrollTo("Vorteile");
-                    }}
-                    className={`text-black w-full text-left px-4 py-2 rounded-md ${
-                      selectedMenuItem === "Vorteile"
-                        ? "bg-gray-200"
-                        : "hover:bg-gray-100"
-                    }`}
-                  >
-                    Dein Warum
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => {
-                      setSelectedMenuItem("Kalender");
-                      handleScrollTo("Kalender");
-                    }}
-                    className={`text-black w-full text-left px-4 py-2 rounded-md ${
-                      selectedMenuItem === "Kalender"
-                        ? "bg-gray-200"
-                        : "hover:bg-gray-100"
-                    }`}
-                  >
-                    Kalender
-                  </button>
-                </li>
+                <button
+                  onClick={() => {
+                    setSelectedMenuItem("Vorteile");
+                    handleScrollTo("Vorteile");
+                  }}
+                  className={`text-black w-full text-left px-4 py-2 rounded-md ${
+                    selectedMenuItem === "Vorteile"
+                      ? "bg-gray-200"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  Dein Warum
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => {
+                    setSelectedMenuItem("Kalender");
+                    handleScrollTo("Kalender");
+                  }}
+                  className={`text-black w-full text-left px-4 py-2 rounded-md ${
+                    selectedMenuItem === "Kalender"
+                      ? "bg-gray-200"
+                      : "hover:bg-gray-100"
+                  }`}
+                >
+                  Kalender
+                </button>
+              </li>
+              <li>
                 <button
                   onClick={() => {
                     setSelectedMenuItem("Kontakt");
@@ -381,24 +383,6 @@ export default function HomePage() {
                   Kontakt
                 </button>
               </li>
-
-              {!user && (
-                <li>
-                  {/* <button
-                    onClick={() => {
-                      setSelectedMenuItem("Kontakt");
-                      handleScrollTo("Kontakt");
-                    }}
-                    className={`text-black w-full text-left px-4 py-2 rounded-md ${
-                      selectedMenuItem === "Kontakt"
-                        ? "bg-gray-200"
-                        : "hover:bg-gray-100"
-                    }`}
-                  >
-                    Kontakt
-                  </button> */}
-                </li>
-              )}
             </ul>
           </div>
         )}
