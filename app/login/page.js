@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import Image from "next/image";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaUser, FaLock } from "react-icons/fa";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useUser } from "../context/UserContex";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Logo from "../_components/Logo";
 
 const supabaseUrl = "https://wxgmvazvvqyxzbtpkxld.supabase.co";
 const supabaseKey =
@@ -22,7 +22,7 @@ export default function Page() {
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const router = useRouter();
-  const [isThrottled, setIsThrottled] = useState(false);
+
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
@@ -45,12 +45,7 @@ export default function Page() {
     // If login is successful, check user role
     if (data) {
       const userEmail = data.user?.email;
-
-      // Set user in the context
       setUser(data.user);
-
-      // Store user data to localStorage
-      localStorage.setItem("user", JSON.stringify(data.user));
 
       // Check if the user exists in the "Users" table with a role
       const { data: userRoleData, error: roleError } = await supabase
@@ -63,9 +58,6 @@ export default function Page() {
         setError("Role not found or failed to fetch user role.");
         return;
       }
-
-      // Store the role in localStorage
-      localStorage.setItem("role", userRoleData.role);
 
       // Check if the user is an admin or a regular user
       if (userRoleData.role === "admin") {
@@ -84,153 +76,89 @@ export default function Page() {
 
       // Redirect after showing the toast
       setTimeout(() => {
-        router.push("/"); // Redirect to home or the desired page
+        router.push("/");
       }, 3000);
     }
   };
 
-  const handleForgotPassword = async (event) => {
-    event.preventDefault();
-    setError("");
-
-    if (isThrottled) {
-      setError("Please wait a moment before trying again.");
-      return;
-    }
-
-    const { error } = await supabase.auth.resetPasswordForEmail(
-      forgotPasswordEmail
-    );
-
-    if (error) {
-      if (error.message.includes("rate limit exceeded")) {
-        setError("Too many requests. Please wait a while before trying again.");
-        setIsThrottled(true);
-        setTimeout(() => setIsThrottled(false), 60000);
-      } else {
-        setError(error.message);
-      }
-    } else {
-      toast.success(`Password reset email sent to ${forgotPasswordEmail}`, {
-        position: "top-center",
-        autoClose: 3000,
-      });
-      setIsForgotPassword(false);
-      setIsThrottled(true);
-      setTimeout(() => setIsThrottled(false), 60000);
-    }
-  };
-
   return (
-    <div className="h-screen flex items-center justify-center bg-gray-400 p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100 p-4">
       <ToastContainer />
-      <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
-        <div className="flex justify-center mb-4">
-          <div className="h-12 rounded-full flex items-center w-full justify-center mt-4 md:mt-6 lg:mt-10">
-            <Image src="/logo/logo.tif" alt="Logo" width="70" height="70" />
+      <div className="relative w-full max-w-3xl md:max-w-4xl lg:max-w-6xl bg-white rounded-lg overflow-hidden flex flex-col md:flex-row shadow-2xl shadow-black ">
+        {/* Right Side - Welcome Back Message */}
+        <div className="w-full md:w-1/2 bg-black text-white flex items-center justify-center p-8 md:p-10 lg:p-16 order-first md:order-last">
+          <div className="text-center">
+            <h2 className="text-3xl lg:text-5xl font-bold mb-4">
+              WELCOME! SEMA
+            </h2>
           </div>
         </div>
-        <h1 className="text-center text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 text-black">
-          {isForgotPassword ? "Forgot Password" : "Login"}
-        </h1>
 
-        {!isForgotPassword ? (
-          <form onSubmit={handleLogin}>
-            <div className="mb-4">
+        {/* Left Side - Login Form */}
+        <div className="w-full md:w-1/2 p-8 md:p-10 lg:p-16 flex flex-col justify-center mx-auto">
+          <div className="flex items-center justify-center mb-8">
+            <Logo />
+          </div>
+          <h2 className="text-3xl lg:text-4xl font-bold text-center mb-6 relative">
+            Login
+            <span className="block w-10 h-1 bg-black mt-2 mx-auto"></span>
+          </h2>
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="relative">
               <label
-                className="block text-gray-700 text-xl md:text-2xl lg:text-3xl font-bold mb-2"
+                className="block text-lg font-semibold mb-2"
                 htmlFor="email"
               >
                 Email
               </label>
               <input
-                className="shadow appearance-none border rounded py-3 px-4 text-gray-700 focus:shadow-outline w-full placeholder:text-xl lg:placeholder:text-2xl text-xl lg:text-3xl"
-                id="email"
                 type="email"
+                id="email"
                 placeholder="Email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-2 border-b-2 border-black focus:border-blue-500 outline-none"
               />
+              <FaUser className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
             </div>
-            <div className="relative mt-4">
+            <div className="relative">
               <label
-                className="block text-gray-700 text-xl md:text-2xl lg:text-3xl font-bold mb-2"
+                className="block text-lg font-semibold mb-2"
                 htmlFor="password"
               >
                 Password
               </label>
               <input
-                className="shadow appearance-none border rounded py-3 px-4 text-gray-700 mb-3 focus:outline-none focus:shadow-outline w-full placeholder:text-xl lg:placeholder:text-2xl text-xl lg:text-3xl"
-                id="password"
                 type={passwordVisible ? "text" : "password"}
+                id="password"
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-2 border-b-2 border-black focus:border-blue-500 outline-none"
               />
+              <FaLock className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500" />
               <span
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer text-xl lg:text-3xl text-gray-500 mt-4"
+                className="absolute right-10 top-1/2 transform -translate-y-1/2 cursor-pointer text-gray-500"
                 onClick={togglePasswordVisibility}
               >
                 {passwordVisible ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
             {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-            <div className="flex items-center justify-center mt-8">
-              <button
-                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 md:py-3 lg:py-4 px-4 text-xl lg:text-2xl rounded-lg focus:outline-none focus:shadow-outline w-full"
-                type="submit"
-              >
-                Login
-              </button>
-            </div>
-            <p
-              className="text-center text-lg md:text-xl lg:text-2xl font-semibold mt-6 text-teal-500 cursor-pointer"
-              onClick={() => setIsForgotPassword(true)}
+            <button
+              type="submit"
+              className="w-full  py-5  mt-4 bg-black text-white rounded-full font-bold hover:bg-gray-800 transition "
             >
-              Forgot Password?
-            </p>
+              Login
+            </button>
           </form>
-        ) : (
-          <form onSubmit={handleForgotPassword}>
-            <div className="mb-4">
-              <label
-                className="block text-gray-700 text-xl md:text-2xl lg:text-3xl font-bold mb-2"
-                htmlFor="forgotEmail"
-              >
-                Enter your email to reset password
-              </label>
-              <input
-                className="shadow appearance-none border rounded py-3 px-4 text-gray-700 focus:shadow-outline w-full placeholder:text-xl lg:placeholder:text-2xl text-xl lg:text-3xl"
-                id="forgotEmail"
-                type="email"
-                placeholder="Email"
-                value={forgotPasswordEmail}
-                onChange={(e) => setForgotPasswordEmail(e.target.value)}
-              />
-            </div>
-            {error && <p className="text-red-500 text-center mt-2">{error}</p>}
-            <div className="flex items-center justify-center mt-8">
-              <button
-                className="bg-teal-500 hover:bg-teal-700 text-white font-bold py-2 md:py-3 lg:py-4 px-4 text-xl lg:text-2xl rounded-lg focus:outline-none focus:shadow-outline w-full"
-                type="submit"
-              >
-                Send Reset Link
-              </button>
-            </div>
-            <p
-              className="text-center text-lg md:text-xl lg:text-2xl font-semibold mt-6 text-teal-500 cursor-pointer"
-              onClick={() => setIsForgotPassword(false)}
-            >
-              Back to Login
-            </p>
-          </form>
-        )}
-        <p className="text-center text-lg md:text-xl lg:text-2xl font-semibold mt-6">
-          Not a member yet?{" "}
-          <a href="register" className="text-teal-500">
-            Register
-          </a>
-        </p>
+          <p className="text-center mt-4">
+            Don’t have an account?{" "}
+            <a href="/register" className="text-blue-500 font-semibold">
+              Sign Up
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
