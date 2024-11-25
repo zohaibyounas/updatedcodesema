@@ -169,7 +169,7 @@ export default function Page() {
             {error && <p className="text-red-500 text-center mt-2">{error}</p>}
             <button
               type="submit"
-              className="w-full py-3 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition duration-200"
+              className=" w-full py-4 bg-black text-white rounded-lg font-semibold hover:bg-gray-800 transition duration-200"
             >
               Login
             </button>
@@ -191,9 +191,9 @@ export default function Page() {
         {/* Right Side - Welcome Back Message */}
         <div className="hidden md:flex w-1/2 bg-black text-white flex-col items-center justify-center p-10">
           <h2 className="text-4xl font-bold mb-4">WELCOME SEMA!</h2>
-          <p className="text-center text-sm">
+          {/* <p className="text-center text-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
+          </p> */}
         </div>
       </div>
     </div>

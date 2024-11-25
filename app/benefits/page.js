@@ -96,11 +96,11 @@ export default function Benefits() {
               margin: "0 auto",
             }}
           >
-            Für alle, die bisher wenig Begeisterung für Sport hatten: Ich zeige
-            dir, dass auch Muskelaufbau und Bewegung richtig Spaß machen können
-            – und irgendwann sogar zur Motivation werden. Du kannst mich nicht
-            einfach auf Pause legen. Sobald du die ersten Erfolge siehst, wird
-            es erst richtig spannend!
+            Meine Pilates-Kurse sind abwechslungsreich und kombinieren Übungen
+            mit dem eigenen Körpergewicht sowie kleinen Hilfsmitteln wie
+            Pilates-Bällen oder Ankle Weights – für ein effektives und
+            vielseitiges Training. Vielfalt bedeutet für mich, dass jede*r
+            mitmachen kann, unabhängig von Fitnesslevel oder Vorerfahrung!
           </p>
         </div>
 

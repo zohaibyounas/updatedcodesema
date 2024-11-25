@@ -18,6 +18,11 @@ const classDetails = [
       <p style='font-weight: 600; font-size: 1.2em; text-align: center; margin-top: 1em;'>🌶 Pilates Strength</p><p style='text-align: center;'>Wir trainieren die größeren Muskelgruppen und bauen gezielt Kraft auf. Ein perfekter Mix für mehr Stabilität und Stärke.</p>
 
       <p style='font-weight: 600; font-size: 1.2em; text-align: center; margin-top: 1em;'>🌶 Pilates Burn</p><p style='text-align: center;'>Der Name sagt es: Ein Ganzkörper-Burn! In dieser Stunde fokussieren wir uns oft auf spezielle Körperbereiche für ein intensives Trainingserlebnis.</p>
+
+      <p style='font-weight: 600; font-size: 1.2em; text-align: center; margin-top: 1em;'>Pilates Standing Ovation 🌶
+</p><p style='text-align: center;'>In dieser besonderen Session liegt der Fokus auf Übungen im Stehen. wir kombinieren Pilates mit einem Barre-Workout, das dir hilft, deine Balance und Stabiliät zu verbessern. Diese dynamische Einheit wird dich zum Staunen bringen und dir neue Perspektiven auf deine Beweglichkeit eröffnen!.</p>
+
+
     `,
   },
 ];
