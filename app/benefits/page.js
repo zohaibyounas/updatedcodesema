@@ -25,7 +25,7 @@ export default function Benefits() {
 
       <div className="grid w-11/12 grid-cols-1 gap-8 sm:gap-12 lg:grid-cols-4 ">
         <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
-          <div className="text-7xl text-teal-500 mb-4">
+          <div className="text-7xl text-gray-500 mb-4">
             <ion-icon name="barbell-outline"></ion-icon>
           </div>
           <h3
@@ -50,7 +50,7 @@ export default function Benefits() {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
-          <div className="text-7xl text-teal-500 mb-4">
+          <div className="text-7xl text-gray-500 mb-4">
             <ion-icon name="heart-outline"></ion-icon>
           </div>
           <h3
@@ -76,7 +76,7 @@ export default function Benefits() {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
-          <div className="text-7xl text-teal-500 mb-4">
+          <div className="text-7xl text-gray-500 mb-4">
             <ion-icon name="sparkles-outline"></ion-icon>{" "}
             {/* New attractive icon */}
           </div>
@@ -105,7 +105,7 @@ export default function Benefits() {
         </div>
 
         <div className="bg-gray-50 p-6 rounded-lg shadow-lg min-h-80 flex flex-col items-center">
-          <div className="text-7xl text-teal-500 mb-4">
+          <div className="text-7xl text-gray-500 mb-4">
             <ion-icon name="happy-outline"></ion-icon>
           </div>
           <h3
