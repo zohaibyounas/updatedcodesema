@@ -24,7 +24,10 @@ export default function TimeTable() {
   const [isDeleting, setIsDeleting] = useState(false);
   const modalRef = useRef(null);
 
+  // Fetch courses for the specific current month
   const fetchCourses = async () => {
+    setCourses({}); // Clear previous courses when fetching new ones for the current month
+
     const { data, error } = await supabase.from("Courses").select("*");
     if (error) {
       toast.error("Error fetching courses!", { position: "top-center" });
@@ -33,18 +36,27 @@ export default function TimeTable() {
 
     const coursesByDate = {};
     data.forEach((course) => {
-      const date = course.course_schedule;
+      const date = dayjs(course.course_schedule).format("YYYY-MM-DD");
       if (!coursesByDate[date]) {
         coursesByDate[date] = [];
       }
       coursesByDate[date].push(course);
     });
-    setCourses(coursesByDate);
+
+    // Filter courses to only show those for the current month and year
+    const filteredCourses = {};
+    for (const [date, courseList] of Object.entries(coursesByDate)) {
+      if (dayjs(date).isSame(currentMonth, "month")) {
+        filteredCourses[date] = courseList;
+      }
+    }
+
+    setCourses(filteredCourses);
   };
 
   useEffect(() => {
-    fetchCourses();
-  }, []);
+    fetchCourses(); // Fetch courses when the component mounts or when the current month changes
+  }, [currentMonth]);
 
   const goToPreviousMonth = () => {
     setCurrentMonth(currentMonth.subtract(1, "month"));
@@ -70,10 +82,26 @@ export default function TimeTable() {
       return;
     }
 
+    // Ensure the course is added only for the exact day and time
+    const dateString = day.format("YYYY-MM-DD");
+
+    // Check if a course already exists at the selected time for the day
+    const existingCourses = courses[dateString] || [];
+    const isTimeSlotOccupied = existingCourses.some(
+      (course) => course.course_duration === newCourse.time
+    );
+
+    if (isTimeSlotOccupied) {
+      toast.error("A course is already scheduled for this time slot.", {
+        position: "top-center",
+      });
+      return;
+    }
+
     const postdata = {
       course_title: newCourse.name,
       course_duration: newCourse.time,
-      course_schedule: day.format("YYYY-MM-DD"),
+      course_schedule: dateString, // Store the exact date in 'YYYY-MM-DD' format
     };
 
     const { error } = await supabase.from("Courses").insert([postdata]);
@@ -87,7 +115,7 @@ export default function TimeTable() {
 
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
-    await fetchCourses();
+    await fetchCourses(); // Re-fetch courses after adding the new course
     toast.success("Course added successfully!", { position: "top-center" });
   };
 
@@ -116,7 +144,7 @@ export default function TimeTable() {
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
     setEditingCourse(null);
-    await fetchCourses();
+    await fetchCourses(); // Re-fetch courses after saving the edit
     toast.success("Course updated successfully!", {
       position: "top-center",
     });
@@ -139,7 +167,7 @@ export default function TimeTable() {
     setNewCourse({ name: "", time: "" });
     setSelectedDay(null);
     setEditingCourse(null);
-    await fetchCourses();
+    await fetchCourses(); // Re-fetch courses after deleting a course
     setIsDeleting(false);
     toast.success("Course deleted successfully!", {
       position: "top-center",
@@ -224,11 +252,9 @@ export default function TimeTable() {
                               (course, i) => (
                                 <div
                                   key={i}
-                                  className="text-black flex flex-col h-full justify-between mt-2" // Adjusted margin here
+                                  className="text-black flex flex-col h-full justify-between mt-2"
                                 >
                                   <div className="text-xs md:text-lg pt-12 lg:pt-24">
-                                    {" "}
-                                    {/* Reduced font size */}
                                     {course.course_title}
                                   </div>
                                   <div className="flex items-center justify-center text-xs md:text-base mb-1 mt-1 ">
@@ -236,7 +262,7 @@ export default function TimeTable() {
                                   </div>
                                   {!isAdmin && (
                                     <button
-                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
+                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2"
                                       onClick={() => {
                                         document
                                           .getElementById("Kontakt")

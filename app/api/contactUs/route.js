@@ -12,7 +12,7 @@ export async function POST(request) {
       secure: true,
       auth: {
         user: "sema@body-mirror.com",
-        pass: "@Semabm123@", // Replace with your actual password
+        pass: "@Semabm123@",
       },
     });
 
