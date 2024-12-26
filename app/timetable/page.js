@@ -185,7 +185,7 @@ export default function TimeTable() {
             <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
               <thead className="bg-stone-300 text-black">
                 <tr>
-                  <th className="p-2 md:p-3">Uhrzeit</th>
+                  {/* <th className="p-2 md:p-3">Uhrzeit</th> */}
                   {[
                     "Sonntag",
                     "Montag",
@@ -204,10 +204,10 @@ export default function TimeTable() {
               <tbody>
                 {Array.from({ length: 5 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    <th className="border border-gray-300 bg-stone-300 p-2 md:p-4">
+                    {/* <th className="border border-gray-300 bg-stone-300 p-2 md:p-4">
                       <span>{`${9 + rowIndex}:00`}</span> -{" "}
                       <span>{`${10 + rowIndex}:00`}</span>
-                    </th>
+                    </th> */}
                     {days
                       .slice(rowIndex * 7, (rowIndex + 1) * 7)
                       .map((day, colIndex) => (
