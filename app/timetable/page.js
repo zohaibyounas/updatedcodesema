@@ -236,7 +236,7 @@ export default function TimeTable() {
                                   </div>
                                   {!isAdmin && (
                                     <button
-                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
+                                      className=" bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-24" // Reduced margin here
                                       onClick={() => {
                                         document
                                           .getElementById("Kontakt")
