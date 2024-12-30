@@ -216,7 +216,7 @@ export default function TimeTable() {
                           className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer"
                           onClick={() => isAdmin && setSelectedDay(day)}
                         >
-                          <span className="absolute top-0 left-0 m-1 text-black text-xs sm:text-base">
+                          <span className="absolute top-0 left-0 m-1 text-black text-[5px] lg:text-sm">
                             {day.date()}
                           </span>
                           <div className="flex items-center flex-col justify-between h-full">
