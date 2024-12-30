@@ -181,8 +181,8 @@ export default function TimeTable() {
         <div
           className={`w-full ${selectedDay && !isDeleting ? "blur-sm" : ""}`}
         >
-          <div className="overflow-x-auto">
-            <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
+          <div className="overflow-x-auto mx-6">
+            <table className="w-full  border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
               <thead className="bg-stone-300 text-black">
                 <tr>
                   {/* <th className="p-2 md:p-3">Uhrzeit</th> */}
