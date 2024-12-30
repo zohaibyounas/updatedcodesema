@@ -213,13 +213,13 @@ export default function TimeTable() {
                       .map((day, colIndex) => (
                         <td
                           key={colIndex}
-                          className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer"
+                          className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer  "
                           onClick={() => isAdmin && setSelectedDay(day)}
                         >
                           <span className="absolute top-0 left-0 m-1 text-black text-[5px] lg:text-sm">
                             {day.date()}
                           </span>
-                          <div className="flex items-center flex-col justify-between h-full">
+                          <div className="flex items-center flex-col justify-between h-full mx-12 -my-28 ">
                             {(courses[day.format("YYYY-MM-DD")] || []).map(
                               (course, i) => (
                                 <div
