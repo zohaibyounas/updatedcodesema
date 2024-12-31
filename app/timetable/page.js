@@ -219,7 +219,7 @@ export default function TimeTable() {
                           <span className="absolute top-0 left-0 m-1 text-black text-xs sm:text-base">
                             {day.date()}
                           </span>
-                          <div className="flex items-center flex-col justify-between h-full mx-12 -my-24 ">
+                          <div className="flex items-center flex-col justify-between h-full mx-12 -my-24 lg:my-0 ">
                             {(courses[day.format("YYYY-MM-DD")] || []).map(
                               (course, i) => (
                                 <div
