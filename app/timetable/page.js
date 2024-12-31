@@ -182,10 +182,10 @@ export default function TimeTable() {
           className={`w-full ${selectedDay && !isDeleting ? "blur-sm" : ""}`}
         >
           <div className="overflow-x-auto mx-6">
-            <table className="w-full  border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
+            <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
               <thead className="bg-stone-300 text-black">
                 <tr>
-                  {/* <th className="p-2 md:p-3">Uhrzeit</th> */}
+                  <th className="p-2 md:p-3">Uhrzeit</th>
                   {[
                     "Sonntag",
                     "Montag",
@@ -213,13 +213,13 @@ export default function TimeTable() {
                       .map((day, colIndex) => (
                         <td
                           key={colIndex}
-                          className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer  "
+                          className="relative border border-gray-300 p-1 md:p-2 lg:p-4 cursor-pointer"
                           onClick={() => isAdmin && setSelectedDay(day)}
                         >
-                          <span className="absolute top-0 left-0 m-1 text-black text-[5px] lg:text-sm">
+                          <span className="absolute top-0 left-0 m-1 text-black text-xs sm:text-base">
                             {day.date()}
                           </span>
-                          <div className="flex items-center flex-col justify-between h-full mx-12 -my-28 ">
+                          <div className="flex items-center flex-col justify-between h-full mx-12 -my-24 ">
                             {(courses[day.format("YYYY-MM-DD")] || []).map(
                               (course, i) => (
                                 <div
@@ -236,7 +236,7 @@ export default function TimeTable() {
                                   </div>
                                   {!isAdmin && (
                                     <button
-                                      className=" bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-24" // Reduced margin here
+                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
                                       onClick={() => {
                                         document
                                           .getElementById("Kontakt")
