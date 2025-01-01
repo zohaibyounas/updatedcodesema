@@ -152,11 +152,6 @@ export default function TimeTable() {
     setEditingCourse(null);
   };
 
-  // Helper function to format time to HH:mm (removes extra :00 if present)
-  const formatTime = (time) => {
-    return time.includes(":00") ? time.slice(0, -3) : time;
-  };
-
   return (
     <div className="py-12 -mt-20 sm:-mt-0 lg:-mt-0" id="Kalender">
       <div className="relative mx-auto flex flex-col items-center justify-center w-full overflow-x-hidden text-center min-h-[75vh]">
@@ -185,7 +180,7 @@ export default function TimeTable() {
             <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
               <thead className="bg-stone-300 text-black">
                 <tr>
-                  <th className="p-2 md:p-3">Uhrzeit</th>
+                  {/* <th className="p-2 md:p-3">Uhrzeit</th> */}
                   {[
                     "Sonntag",
                     "Montag",
@@ -219,20 +214,20 @@ export default function TimeTable() {
                           <span className="absolute top-0 left-0 m-1 text-black text-xs sm:text-base">
                             {day.date()}
                           </span>
-                          <div className="flex items-center flex-col justify-between h-full mx-12 -my-24 lg:my-0 ">
+                          <div className="flex items-center flex-col justify-between -my-12 mx-4 ">
                             {(courses[day.format("YYYY-MM-DD")] || []).map(
                               (course, i) => (
                                 <div
                                   key={i}
                                   className="text-black flex flex-col h-full justify-between mt-2" // Adjusted margin here
                                 >
-                                  <div className="text-xs md:text-lg pt-12 lg:pt-24">
+                                  <div className="text-xs md:text-lg">
                                     {" "}
                                     {/* Reduced font size */}
                                     {course.course_title}
                                   </div>
                                   <div className="flex items-center justify-center text-xs md:text-base mb-1 mt-1 ">
-                                    {formatTime(course.course_duration)}
+                                    {course.course_duration}
                                   </div>
                                   {!isAdmin && (
                                     <button
