@@ -70,9 +70,12 @@ export default function TimeTable() {
       return;
     }
 
+    // Ensure the time is in the "HH:mm" format (remove any seconds if present)
+    const formattedTime = newCourse.time.slice(0, 5); // "09:15:00" becomes "09:15"
+
     const postdata = {
       course_title: newCourse.name,
-      course_duration: newCourse.time,
+      course_duration: formattedTime, // Use the formatted time here
       course_schedule: day.format("YYYY-MM-DD"),
     };
 
@@ -180,7 +183,6 @@ export default function TimeTable() {
             <table className="w-full border-collapse text-xs md:text-sm lg:text-lg lg:h-[60rem] h-[35rem] ">
               <thead className="bg-stone-300 text-black">
                 <tr>
-                  {/* <th className="p-2 md:p-3">Uhrzeit</th> */}
                   {[
                     "Sonntag",
                     "Montag",
@@ -199,10 +201,6 @@ export default function TimeTable() {
               <tbody>
                 {Array.from({ length: 5 }).map((_, rowIndex) => (
                   <tr key={rowIndex}>
-                    {/* <th className="border border-gray-300 bg-stone-300 p-2 md:p-4">
-                      <span>{`${9 + rowIndex}:00`}</span> -{" "}
-                      <span>{`${10 + rowIndex}:00`}</span>
-                    </th> */}
                     {days
                       .slice(rowIndex * 7, (rowIndex + 1) * 7)
                       .map((day, colIndex) => (
@@ -219,19 +217,19 @@ export default function TimeTable() {
                               (course, i) => (
                                 <div
                                   key={i}
-                                  className="text-black flex flex-col h-full justify-between mt-2" // Adjusted margin here
+                                  className="text-black flex flex-col h-full justify-between mt-2"
                                 >
                                   <div className="text-xs md:text-lg">
-                                    {" "}
-                                    {/* Reduced font size */}
                                     {course.course_title}
                                   </div>
                                   <div className="flex items-center justify-center text-xs md:text-base mb-1 mt-1 ">
-                                    {course.course_duration}
+                                    {course.course_duration.slice(0, 5)}{" "}
+                                    {/* This will show only the "HH:mm" part */}
                                   </div>
+
                                   {!isAdmin && (
                                     <button
-                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2" // Reduced margin here
+                                      className="mt-auto bg-teal-400 text-white px-2 py-1 font-semibold md:px-6 md:py-2 rounded text-xs md:text-lg mb-2"
                                       onClick={() => {
                                         document
                                           .getElementById("Kontakt")
@@ -304,8 +302,12 @@ export default function TimeTable() {
               <input
                 type="time"
                 value={newCourse.time}
-                onChange={(e) =>
-                  setNewCourse({ ...newCourse, time: e.target.value })
+                onChange={
+                  (e) =>
+                    setNewCourse({
+                      ...newCourse,
+                      time: e.target.value.slice(0, 5),
+                    }) // Ensures it is "HH:mm"
                 }
                 className="block w-full p-6 border border-gray-300 rounded mb-4 placeholder:text-xl text-2xl"
               />
